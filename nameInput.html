@@ -7,12 +7,12 @@
     width: 100%;
   }
 
-  label, input {
+  form label, form input {
     grid-column: 1;
     font-size: 3rem;
   }
 
-  input, input:autofill {
+  form input, form input:autofill {
     font-family: "Viaoda Libre";
     background: #1f0e1c;
     color: #e4943a;
@@ -21,12 +21,12 @@
     border-bottom: solid .1rem #e4943a;
   }
 
-  input:placeholder-shown + button {
+  form input:placeholder-shown + form button {
     opacity: .3;
     pointer-events: none;
   }
 
-  button {
+  form button {
     grid-column: 2;
     font-family: "Vidaloka";
     font-size: 3rem;
@@ -41,7 +41,7 @@
     cursor: pointer;
   }
 
-  input:not(:placeholder-shown) + button:hover {
+  form input:not(:placeholder-shown) + form button:hover {
     transform: scale(1);
   }
 </style>
