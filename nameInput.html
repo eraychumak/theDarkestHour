@@ -1,0 +1,53 @@
+<style>
+  form {
+    display: grid;
+    grid-template-columns: auto auto;
+    flex-direction: column;
+    gap: .5rem 1rem;
+    width: 100%;
+  }
+
+  label, input {
+    grid-column: 1;
+    font-size: 3rem;
+  }
+
+  input, input:autofill {
+    font-family: "Viaoda Libre";
+    background: #1f0e1c;
+    color: #e4943a;
+    outline: none;
+    border: none;
+    border-bottom: solid .1rem #e4943a;
+  }
+
+  input:placeholder-shown + button {
+    opacity: .3;
+    pointer-events: none;
+  }
+
+  button {
+    grid-column: 2;
+    font-family: "Vidaloka";
+    font-size: 3rem;
+    padding: 1rem;
+    background: #2c121f;
+    color: #fff;
+    border: solid .2rem #e4943a;
+    border-radius: .5rem;
+    transform: scale(.9);
+    transition: 100ms ease-in-out;
+    transition-property: transform, opacity;
+    cursor: pointer;
+  }
+
+  input:not(:placeholder-shown) + button:hover {
+    transform: scale(1);
+  }
+</style>
+
+<form>
+  <label for="firstName">Their name?</label>
+  <input id="firstName" type="text" name="firstName" placeholder="First name" autocapitalize="words" autocomplete="off">
+  <button type="submit" id="beginGame">Begin Game</button>
+</form>
