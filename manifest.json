@@ -1,0 +1,13 @@
+{
+  "name": "The Darkest Hour",
+  "start_url": "/",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "icons": [
+    {
+      "src": "./assets/logo.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    }
+  ]
+}
