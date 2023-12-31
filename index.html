@@ -4,6 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/menu/shield.png"/>
     <link rel="manifest" href="manifest.json">
     <title>The Darkest Hour</title>
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
@@ -24,14 +25,90 @@
         color: #fff;
         font-family: "Vidaloka";
         font-size: 16px;
+        text-wrap: pretty;
       }
 
       p {
         font-size: 3rem;
       }
+
+      .reqFullscreen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 2rem;
+        height: 100dvh;
+        width: 100dvw;
+        padding: 2rem;
+        z-index: 1;
+        background: #1f0e1c;
+        text-align: center;
+      }
+
+      .reqFullscreen h1 {
+        font-size: 3rem;
+        font-family: "Viaoda Libre";
+      }
+
+      .reqFullscreen p {
+        font-size: 1.2rem;
+        font-family: "Vidaloka";
+      }
+
+      .reqFullscreen img {
+        width: 100%;
+        animation: glow 3s ease-in-out infinite;
+      }
+
+      .reqFullscreen button {
+        font-family: "Vidaloka";
+        font-size: 2rem;
+        padding: 1rem;
+        background: #2c121f;
+        color: #fff;
+        border: solid .2rem #e4943a;
+        border-radius: .5rem;
+        transform: scale(.9);
+        transition: 100ms ease-in-out;
+        transition-property: transform, opacity;
+        cursor: pointer;
+      }
+
+      @keyframes glow {
+        0% {
+          opacity: .5;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          opacity: .5;
+        }
+      }
+
+      @media (orientation: landscape) {
+        .reqFullscreen {
+          display: none;
+        }
+      }
     </style>
   </head>
   <body>
+    <div class="reqFullscreen">
+      <h1>The Darkest Hour</h1>
+      <p>For the best playing experience, go into<br/>landscape and fullscreen mode.</p>
+      <img src="./assets/landscape.png"/>
+      <button id="enterFS" onclick="enterFullscreen()">
+        Enter fullscreen
+      </button>
+    </div>
     <script type="module" src="main.js"></script>
+    <script>
+      function enterFullscreen() {
+        const canvas = document.getElementsByTagName("canvas").item(0);
+        canvas.requestFullscreen();
+      }
+    </script>
   </body>
 </html>
