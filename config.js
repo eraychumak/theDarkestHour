@@ -6,7 +6,22 @@ const KEYS = Object.freeze({
     BG: "MENU_BG",
     SHIELD: "MENU_SHIELD",
     INPUT: "MENU_INPUT_NAME",
-    BTN: "MENU_BEGIN_GAME"
+    BTN: Object.freeze({
+      FULLSCREEN: "MENU_ENTER_FULLSCREEN",
+      EXIT_FULLSCREEN: "MENU_EXIT_FULLSCREEN"
+    })
+  }),
+  CHARACTERS: Object.freeze({
+    OLD_MAN: "OLD_MAN"
+  }),
+  SOUND: Object.freeze({
+    BATTLE: "SOUND_BATTLE",
+    NOMOREMAGIC: "SOUND_NO_MORE_MAGIC",
+    BTN: Object.freeze({
+      SELECT: "SOUND_BTN_SELECT",
+      CLICK: "SOUND_BTN_CLICK"
+    }),
+    ERR: "SOUND_ERROR"
   })
 });
 
@@ -14,7 +29,29 @@ const IMAGES = Object.freeze({
   MENU: Object.freeze({
     BG: "./assets/menu/bg.png",
     SHIELD: "./assets/menu/shield.png",
-    BTN: "./assets/menu/beginGame.png"
+    BTN: Object.freeze({
+      FULLSCREEN: "./assets/menu/fullscreen.png",
+      EXIT_FULLSCREEN: "./assets/menu/exitFullscreen.png"
+    })
+  })
+});
+
+const SOUND = Object.freeze({
+  BATTLE: "./assets/sound/battleTheme.mp3",
+  NOMOREMAGIC: "./assets/sound/noMoreMagic.mp3",
+  BTN: Object.freeze({
+    SELECT: "./assets/sound/select_001.ogg",
+    CLICK: "./assets/sound/click_002.ogg"
+  }),
+  ERR: "./assets/sound/error_007.ogg"
+});
+
+const SPRITE_SHEETS = Object.freeze({
+  CHARACTERS: Object.freeze({
+    OLD_MAN: Object.freeze({
+      PNG: "./assets/spritesheets/OldMan.png",
+      JSON: "./assets/spritesheets/OldMan.json"
+    })
   })
 });
 
@@ -61,6 +98,8 @@ export {
   IMAGES,
   HTML,
   SIZES,
+  SOUND,
   STYLES,
-  TEXT
+  TEXT,
+  SPRITE_SHEETS
 };
