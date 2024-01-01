@@ -21,7 +21,7 @@
         height: 100%;
         width: 100%;
         overflow: hidden;
-        background: #000;
+        background: #1f0e1c;
         color: #fff;
         font-family: "Vidaloka";
         font-size: 16px;
@@ -32,7 +32,7 @@
         font-size: 3rem;
       }
 
-      .reqFullscreen {
+      #notifyLandscapeMode {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -46,22 +46,22 @@
         text-align: center;
       }
 
-      .reqFullscreen h1 {
+      #notifyLandscapeMode h1 {
         font-size: 3rem;
         font-family: "Viaoda Libre";
       }
 
-      .reqFullscreen p {
+      #notifyLandscapeMode p {
         font-size: 1.2rem;
         font-family: "Vidaloka";
       }
 
-      .reqFullscreen img {
+      #notifyLandscapeMode img {
         width: 100%;
         animation: glow 3s ease-in-out infinite;
       }
 
-      .reqFullscreen button {
+      #notifyLandscapeMode button {
         font-family: "Vidaloka";
         font-size: 2rem;
         padding: 1rem;
@@ -88,26 +88,26 @@
       }
 
       @media (orientation: landscape) {
-        .reqFullscreen {
+        #notifyLandscapeMode {
           display: none;
         }
       }
     </style>
   </head>
   <body>
-    <div class="reqFullscreen">
+    <div id="notifyLandscapeMode">
       <h1>The Darkest Hour</h1>
-      <p>For the best playing experience, go into<br/>landscape and fullscreen mode.</p>
+      <p>For the best playing experience, go into<br/>landscape mode.</p>
       <img src="./assets/landscape.png"/>
-      <button id="enterFS" onclick="enterFullscreen()">
-        Enter fullscreen
+      <button id="enterFS" onclick="dismiss()">
+        Dismiss
       </button>
     </div>
     <script type="module" src="main.js"></script>
     <script>
-      function enterFullscreen() {
-        const body = document.getElementsByTagName("body").item(0)
-        body.requestFullscreen();
+      function dismiss() {
+        const notifyLandscapeMode = document.getElementById("notifyLandscapeMode");
+        notifyLandscapeMode.remove();
       }
     </script>
   </body>
