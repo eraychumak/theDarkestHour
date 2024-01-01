@@ -1,6 +1,8 @@
 const KEYS = Object.freeze({
   SCENE: Object.freeze({
     PRELOAD: "SCENE_PRELOAD",
+    MENU: "SCENE_MENU",
+    GAME: "SCENE_GAME",
   }),
   MENU: Object.freeze({
     BG: "MENU_BG",
@@ -22,6 +24,16 @@ const KEYS = Object.freeze({
       CLICK: "SOUND_BTN_CLICK"
     }),
     ERR: "SOUND_ERROR"
+  }),
+  ANIMATION: Object.freeze({
+    OLD_MAN: {
+      STILL: "OLD_MAN_STILL",
+      ATTACK: "OLD_MAN_ATTACK",
+      DEATH: "OLD_MAN_DEATH",
+      HURT: "OLD_MAN_HURT",
+      IDLE: "OLD_MAN_IDLE",
+      WALK: "OLD_MAN_WALK"
+    }
   })
 });
 
