@@ -15,6 +15,10 @@ const config = {
     autoCenter: Phaser.Scale.BOTH
   },
   title: "The Darkest Hour",
+  pixelArt: true,
+  physics: {
+    default: "arcade"
+},
 };
 
 WebFont.load({
