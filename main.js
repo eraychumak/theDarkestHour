@@ -1,4 +1,6 @@
+import PreloadScene from "./Scenes/Preload.js";
 import MenuScene from "./Scenes/Menu.js";
+import GameScene from "./Scenes/Game.js";
 
 const config = {
   type: Phaser.AUTO,
@@ -6,7 +8,7 @@ const config = {
   dom: {
     createContainer: true
   },
-  scene: [MenuScene],
+  scene: [PreloadScene, MenuScene, GameScene],
   backgroundColor: "#1F0E1C",
   scale: {
     width: 1920,
@@ -15,10 +17,14 @@ const config = {
     autoCenter: Phaser.Scale.BOTH
   },
   title: "The Darkest Hour",
+  version: 1,
+  banner: {
+    hidePhaser: true
+  },
   pixelArt: true,
   physics: {
     default: "arcade"
-},
+  },
 };
 
 WebFont.load({
