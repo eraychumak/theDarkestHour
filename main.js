@@ -29,7 +29,7 @@ const config = {
 
 WebFont.load({
   google: {
-    families: ["Viaoda Libre"]
+    families: ["Viaoda Libre", "Vidaloka", "Viga"]
   },
   active: startGame
 });
