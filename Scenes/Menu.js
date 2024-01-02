@@ -16,10 +16,6 @@ export default class MenuScene extends Phaser.Scene {
     this.#soundErr;
   }
 
-  init() {
-    console.log(`[${KEYS.SCENE.MENU}:init] Invoked`);
-  }
-
   create() {
     /*
       For FX transition, a coloured background is needed
@@ -54,14 +50,18 @@ export default class MenuScene extends Phaser.Scene {
   }
 
   #art() {
-    const background = this.add.image(
+    const art = this.add.image(
       this.game.config.width,
       this.game.config.height,
-      KEYS.MENU.BG
+      KEYS.MENU.ART
     );
 
-    background.setOrigin(1);
-    background.setScale(1.5);
+    art.setOrigin(1);
+    art.setScale(1.5);
+
+    const bg = this.add.image(0, 0, KEYS.MENU.BG);
+    bg.setOrigin(0);
+    bg.setAlpha(.1);
   }
 
   #fullscreenHandler() {
