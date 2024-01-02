@@ -6,11 +6,18 @@ const KEYS = Object.freeze({
   }),
   MENU: Object.freeze({
     BG: "MENU_BG",
+    ART: "MENU_ART",
     SHIELD: "MENU_SHIELD",
     INPUT: "MENU_INPUT_NAME",
     BTN: Object.freeze({
       FULLSCREEN: "MENU_ENTER_FULLSCREEN",
       EXIT_FULLSCREEN: "MENU_EXIT_FULLSCREEN"
+    })
+  }),
+  GAME: Object.freeze({
+    GRASS: "GAME_GRASS",
+    BTN: Object.freeze({
+      PAUSE: "GAME_BTN_PAUSE"
     })
   }),
   CHARACTERS: Object.freeze({
@@ -19,6 +26,7 @@ const KEYS = Object.freeze({
   SOUND: Object.freeze({
     BATTLE: "SOUND_BATTLE",
     NOMOREMAGIC: "SOUND_NO_MORE_MAGIC",
+    RISING: "SOUND_RISING",
     BTN: Object.freeze({
       SELECT: "SOUND_BTN_SELECT",
       CLICK: "SOUND_BTN_CLICK"
@@ -26,24 +34,32 @@ const KEYS = Object.freeze({
     ERR: "SOUND_ERROR"
   }),
   ANIMATION: Object.freeze({
-    OLD_MAN: {
+    OLD_MAN: Object.freeze({
       STILL: "OLD_MAN_STILL",
       ATTACK: "OLD_MAN_ATTACK",
       DEATH: "OLD_MAN_DEATH",
       HURT: "OLD_MAN_HURT",
       IDLE: "OLD_MAN_IDLE",
       WALK: "OLD_MAN_WALK"
-    }
+    })
   })
 });
 
 const IMAGES = Object.freeze({
   MENU: Object.freeze({
-    BG: "./assets/menu/bg.png",
+    BG: "./assets/menu/bg.jpg",
+    ART: "./assets/menu/art.png",
     SHIELD: "./assets/menu/shield.png",
     BTN: Object.freeze({
       FULLSCREEN: "./assets/menu/fullscreen.png",
-      EXIT_FULLSCREEN: "./assets/menu/exitFullscreen.png"
+      EXIT_FULLSCREEN: "./assets/menu/exitFullscreen.png",
+      PAUSE: "./assets/menu/pause.png"
+    })
+  }),
+  GAME: Object.freeze({
+    GRASS: "./assets/game/tilesets/FieldsTile_38.png",
+    BTN: Object.freeze({
+      PAUSE: "./assets/game/pause.png"
     })
   })
 });
@@ -51,6 +67,7 @@ const IMAGES = Object.freeze({
 const SOUND = Object.freeze({
   BATTLE: "./assets/sound/battleTheme.mp3",
   NOMOREMAGIC: "./assets/sound/noMoreMagic.mp3",
+  RISING: "./assets/sound/rising.mp3",
   BTN: Object.freeze({
     SELECT: "./assets/sound/select_001.ogg",
     CLICK: "./assets/sound/click_002.ogg"
@@ -82,8 +99,9 @@ const SIZES = Object.freeze({
 
 const STYLES = Object.freeze({
   TEXT: Object.freeze({
-    TITLE: { font: `${SIZES.TITLE} 'Viaoda Libre Regular'` },
-    NORMAL: { font: `${SIZES.NORMAL} 'Vidaloka Regular'` },
+    TITLE: { font: `${SIZES.TITLE} 'Viaoda Libre'` },
+    NORMAL: { font: `${SIZES.NORMAL} 'Vidaloka'` },
+    GAME: { font: `${SIZES.NORMAL} 'Viga'`},
     ERR: {
       font: `${SIZES.ERR} 'Vidaloka Regular'`,
       color: "#f5a54b"

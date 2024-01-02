@@ -19,14 +19,17 @@ export default class PreloadScene extends Phaser.Scene {
 
     this.load.audio(KEYS.SOUND.BATTLE, [SOUND.BATTLE]);
     this.load.audio(KEYS.SOUND.NOMOREMAGIC, [SOUND.NOMOREMAGIC]);
+    this.load.audio(KEYS.SOUND.RISING, [SOUND.RISING]);
     this.load.audio(KEYS.SOUND.BTN.SELECT, [SOUND.BTN.SELECT]);
     this.load.audio(KEYS.SOUND.BTN.CLICK, [SOUND.BTN.CLICK]);
     this.load.audio(KEYS.SOUND.ERR, [SOUND.ERR]);
 
     this.load.image(KEYS.MENU.BG, IMAGES.MENU.BG);
+    this.load.image(KEYS.MENU.ART, IMAGES.MENU.ART);
     this.load.image(KEYS.MENU.SHIELD, IMAGES.MENU.SHIELD);
     this.load.image(KEYS.MENU.BTN.FULLSCREEN, IMAGES.MENU.BTN.FULLSCREEN);
     this.load.image(KEYS.MENU.BTN.EXIT_FULLSCREEN, IMAGES.MENU.BTN.EXIT_FULLSCREEN);
+    this.load.image(KEYS.GAME.BTN.PAUSE, IMAGES.GAME.BTN.PAUSE);
 
     // 48x48 frame, 21 frames
     this.load.spritesheet(KEYS.CHARACTERS.OLD_MAN, SPRITE_SHEETS.CHARACTERS.OLD_MAN.PNG, {
@@ -34,6 +37,7 @@ export default class PreloadScene extends Phaser.Scene {
       frameHeight: 48
     });
 
+    this.load.image(KEYS.GAME.GRASS, IMAGES.GAME.GRASS);
   }
 
   create () {
