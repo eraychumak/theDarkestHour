@@ -21,6 +21,12 @@ export default class MenuScene extends Phaser.Scene {
   }
 
   create() {
+    /*
+      For FX transition, a coloured background is needed
+      to prevent visual gaps during scene transition.
+    */
+    this.add.rectangle(0, 0, this.game.config.width, this.game.config.height, 0x1F0E1C).setOrigin(0);
+
     this.#sound();
     this.#art();
     this.#fullscreenHandler();
