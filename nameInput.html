@@ -14,7 +14,7 @@
 
   form input, form input:autofill {
     font-family: "Viaoda Libre";
-    background: #1f0e1c;
+    background: transparent;
     color: #e4943a;
     outline: none;
     border: none;
@@ -44,9 +44,18 @@
   input:not(:placeholder-shown) + button:hover {
     transform: scale(1);
   }
+
+  form.hide {
+    animation: hide 500ms linear forwards;
+  }
+
+  @keyframes hide {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
 </style>
 
-<form>
+<form id="formFirstName">
   <label for="firstName">Their name?</label>
   <input id="firstName" type="text" name="firstName" placeholder="First name" autocapitalize="words" autocomplete="off">
   <button type="submit" id="beginGame">Begin Game</button>
