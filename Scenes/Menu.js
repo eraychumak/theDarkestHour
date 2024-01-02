@@ -125,6 +125,14 @@ export default class MenuScene extends Phaser.Scene {
     const input = this.add.dom(intro.x, intro.y * 1.5).createFromCache(KEYS.MENU.INPUT);
     input.setOrigin(0);
 
+    // check if first name already exists
+    const sessionfirstName = sessionStorage.getItem("firstName");
+
+    if (sessionfirstName) {
+      const domElementInput = document.getElementById("firstName");
+      domElementInput.value = sessionfirstName;
+    }
+
     const errText = this.add.text(input.x, (input.y + input.height) + 15, "", STYLES.TEXT.ERR);
     errText.setVisible(false);
 
@@ -153,8 +161,19 @@ export default class MenuScene extends Phaser.Scene {
 
       sessionStorage.setItem("firstName", firstName);
 
-      menu.scene.stop(KEYS.SCENE.MENU)
-      menu.scene.start(KEYS.SCENE.GAME);
+      const formElement = document.getElementById("formFirstName");
+      formElement.classList.add("hide");
+
+      const fx = menu.cameras.main.postFX.addWipe(0.1, 0, 0);
+
+      menu.scene.transition({
+        target: KEYS.SCENE.GAME,
+        duration: 2000,
+        moveBelow: true,
+        onUpdate: (progress) => {
+          fx.progress = progress;
+        }
+      });
     });
 
     input.on("input", (e) => {
