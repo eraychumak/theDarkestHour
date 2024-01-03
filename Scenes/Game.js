@@ -1,5 +1,5 @@
 import Player from "../Sprites/Player.js";
-import { KEYS, IMAGES, STYLES, TEXT, HTML, SPRITE_SHEETS, SOUND } from "../config.js";
+import { KEYS, STYLES } from "../config.js";
 
 // .5% probability of getting True
 const Probability_005 = () => Math.random() < .005;
@@ -17,12 +17,8 @@ export default class GameScene extends Phaser.Scene {
     })
   }
 
-  preload() {
-    this.load.image("tiles","../assets/game/tilesets/FieldsTileset.png");
-    this.load.atlas('grass', '../assets/game/groundObjects/spritesheet.png', '../assets/game/groundObjects/spritesheet.json');
-  }
-
-  create () {
+  init() {
+    // fade out any music music from previous scenes.
     const musicArray = this.sound.getAllPlaying();
 
     this.tweens.add({
@@ -30,7 +26,9 @@ export default class GameScene extends Phaser.Scene {
       volume: 0,
       duration: 3_000
     });
+  }
 
+  create() {
     const music01 = this.sound.add(KEYS.SOUND.RISING, {
       loop: true,
       volume: 0
@@ -68,11 +66,11 @@ export default class GameScene extends Phaser.Scene {
       tileHeight: 32
     });
 
-    map.addTilesetImage("tiles");
-    map.createLayer(0, "tiles", 0, 0);
+    map.addTilesetImage(KEYS.GAME.GROUND_TILES);
+    map.createLayer(0, KEYS.GAME.GROUND_TILES, 0, 0);
 
-    const atlasGrass = this.textures.get("grass");
-    const frames = atlasGrass.getFrameNames();
+    const atlasGroundObjects = this.textures.get(KEYS.GAME.GROUND_OBJECTS);
+    const frames = atlasGroundObjects.getFrameNames();
 
     frames.forEach(frame => {
       for (let x = 0; x <= maxChunkSize; x++) {
@@ -94,14 +92,14 @@ export default class GameScene extends Phaser.Scene {
 
         // adds shadow to trees
         if (frame === "Tree_01") {
-          this.add.image(x, y + 35, "grass", "Shadow_06_Tree_01");
+          this.add.image(x, y + 35, KEYS.GAME.GROUND_OBJECTS, "Shadow_06_Tree_01");
         }
 
         if (frame === "Tree_02") {
-          this.add.image(x, y + 5, "grass", "Shadow_03_Tree_02");
+          this.add.image(x, y + 5, KEYS.GAME.GROUND_OBJECTS, "Shadow_03_Tree_02");
         }
 
-        this.add.image(x, y, "grass", frame).setScale(1);
+        this.add.image(x, y, KEYS.GAME.GROUND_OBJECTS, frame).setScale(1);
       }
     });
 

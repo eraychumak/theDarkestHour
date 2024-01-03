@@ -16,6 +16,17 @@ export default class MenuScene extends Phaser.Scene {
     this.#soundErr;
   }
 
+  init() {
+    // fade out any music music from previous scenes.
+    const musicArray = this.sound.getAllPlaying();
+
+    this.tweens.add({
+      targets: musicArray,
+      volume: 0,
+      duration: 3_000
+    });
+  }
+
   create() {
     /*
       For FX transition, a coloured background is needed
@@ -43,6 +54,24 @@ export default class MenuScene extends Phaser.Scene {
 
     music01.play();
     music02.play();
+
+    this.tweens.add({
+      targets: music01,
+      volume: {
+        from: 0,
+        to: .3
+      },
+      duration: 3_000
+    });
+
+    this.tweens.add({
+      targets: music02,
+      volume: {
+        from: 0,
+        to: .8
+      },
+      duration: 3_000
+    });
 
     this.#soundBtnSelect = this.sound.add(KEYS.SOUND.BTN.SELECT);
     this.#soundBtnClick = this.sound.add(KEYS.SOUND.BTN.CLICK);
