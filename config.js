@@ -15,7 +15,8 @@ const KEYS = Object.freeze({
     })
   }),
   GAME: Object.freeze({
-    GRASS: "GAME_GRASS",
+    GROUND_OBJECTS: "GAME_GROUND_OBJECTS",
+    GROUND_TILES: "GAME_GROUND_TILES",
     BTN: Object.freeze({
       PAUSE: "GAME_BTN_PAUSE"
     })
@@ -57,7 +58,9 @@ const IMAGES = Object.freeze({
     })
   }),
   GAME: Object.freeze({
-    GRASS: "./assets/game/tilesets/FieldsTile_38.png",
+    TILESETS: Object.freeze({
+      GROUND: "./assets/game/groundObjects/tileset_ground.png"
+    }),
     BTN: Object.freeze({
       PAUSE: "./assets/game/pause.png"
     })
@@ -78,9 +81,13 @@ const SOUND = Object.freeze({
 const SPRITE_SHEETS = Object.freeze({
   CHARACTERS: Object.freeze({
     OLD_MAN: Object.freeze({
-      PNG: "./assets/spritesheets/OldMan.png",
-      JSON: "./assets/spritesheets/OldMan.json"
+      PNG: "./assets/game/characters/OldMan.png",
+      JSON: "./assets/game/characters/OldMan.json"
     })
+  }),
+  GROUND_OBJECTS: Object.freeze({
+    PNG: "./assets/game/groundObjects/spritesheet.png",
+    JSON: "./assets/game/groundObjects/spritesheet.json"
   })
 });
 

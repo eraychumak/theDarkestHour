@@ -37,7 +37,8 @@ export default class PreloadScene extends Phaser.Scene {
       frameHeight: 48
     });
 
-    this.load.image(KEYS.GAME.GRASS, IMAGES.GAME.GRASS);
+    this.load.image(KEYS.GAME.GROUND_TILES, IMAGES.GAME.TILESETS.GROUND);
+    this.load.atlas(KEYS.GAME.GROUND_OBJECTS, SPRITE_SHEETS.GROUND_OBJECTS.PNG, SPRITE_SHEETS.GROUND_OBJECTS.JSON);
   }
 
   create () {
