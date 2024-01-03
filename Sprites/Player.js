@@ -61,6 +61,11 @@ export default class Player {
       // prevent movement at the very top of the screen for menu controls
       if (pointer.y <= this.#scene.game.config.height * .1) return;
 
+      this.joystickContainer.setPosition(pointer.x, pointer.y);
+
+      this.target.x = pointer.x;
+      this.target.y = pointer.y;
+
       pointerDown = true;
 
       this.joystickContainer.setAlpha(1);
