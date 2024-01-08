@@ -72,6 +72,12 @@ export default class GameScene extends Phaser.Scene {
     const atlasGroundObjects = this.textures.get(KEYS.GAME.GROUND_OBJECTS);
     const frames = atlasGroundObjects.getFrameNames();
 
+    // ground objects which player can collide
+    const collisionObjectKeys = ["Tree_01", "Tree_02", "Log_01", "Log_02", "Log_03", "Stone"];
+    const collisionObjects = this.physics.add.staticGroup({
+      immovable: true
+  });;
+
     frames.forEach(frame => {
       for (let x = 0; x <= maxChunkSize; x++) {
         if (frame.includes("Shadow")) continue;
@@ -99,7 +105,12 @@ export default class GameScene extends Phaser.Scene {
           this.add.image(x, y + 5, KEYS.GAME.GROUND_OBJECTS, "Shadow_03_Tree_02");
         }
 
-        this.add.image(x, y, KEYS.GAME.GROUND_OBJECTS, frame).setScale(1);
+        const groundObject = this.add.image(x, y, KEYS.GAME.GROUND_OBJECTS, frame).setScale(1);
+
+        if (collisionObjectKeys.includes(frame)) {
+          collisionObjects.add(groundObject);
+          this.physics.add.existing(groundObject);
+        }
       }
     });
 
@@ -108,6 +119,8 @@ export default class GameScene extends Phaser.Scene {
 
     const playerSprite = this.player.sprite;
     playerSprite.setScale(2);
+
+    this.physics.add.collider(playerSprite, [ collisionObjects ]);
 
     const timer = this.add.text(
       this.game.config.width / 2,
