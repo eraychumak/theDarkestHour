@@ -8,8 +8,10 @@ export default class Player {
 
     this.player = this.#scene.physics.add.sprite(x, y);
     this.player.setOrigin(1);
-    this.player.setScale(4);
+    this.player.setSize(28, 32);
+    this.player.setOffset(0, 16);
     this.player.setCollideWorldBounds(true);
+    this.player.setScale(4);
     this.player.play(KEYS.ANIMATION.OLD_MAN.IDLE);
     this.name = sessionStorage.getItem("firstName");
   }
