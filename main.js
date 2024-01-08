@@ -1,6 +1,7 @@
 import PreloadScene from "./Scenes/Preload.js";
 import MenuScene from "./Scenes/Menu.js";
 import GameScene from "./Scenes/Game.js";
+import DifficultySelectorScene from "./Scenes/DifficultySelector.js";
 
 const config = {
   type: Phaser.AUTO,
@@ -8,7 +9,7 @@ const config = {
   dom: {
     createContainer: true
   },
-  scene: [PreloadScene, MenuScene, GameScene],
+  scene: [PreloadScene, MenuScene, DifficultySelectorScene, GameScene],
   backgroundColor: "#1F0E1C",
   scale: {
     width: 1920,
