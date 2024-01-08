@@ -16,6 +16,7 @@ export default class PreloadScene extends Phaser.Scene {
     console.log(`[${KEYS.SCENE.PRELOAD}:preload] Invoked`);
 
     this.load.html(KEYS.MENU.INPUT, HTML.MENU.INPUT);
+    this.load.html(KEYS.MENU.INPUT_DIFFICULTY, HTML.MENU.INPUT_DIFFICULTY);
 
     this.load.audio(KEYS.SOUND.BATTLE, [SOUND.BATTLE]);
     this.load.audio(KEYS.SOUND.NOMOREMAGIC, [SOUND.NOMOREMAGIC]);

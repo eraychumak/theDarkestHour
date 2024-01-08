@@ -2,6 +2,7 @@ const KEYS = Object.freeze({
   SCENE: Object.freeze({
     PRELOAD: "SCENE_PRELOAD",
     MENU: "SCENE_MENU",
+    DIFFICULTY_SELECTOR: "SCENE_DIFFICULTY_SELECTOR",
     GAME: "SCENE_GAME",
   }),
   MENU: Object.freeze({
@@ -9,6 +10,7 @@ const KEYS = Object.freeze({
     ART: "MENU_ART",
     SHIELD: "MENU_SHIELD",
     INPUT: "MENU_INPUT_NAME",
+    INPUT_DIFFICULTY: "MENU_INPUT_DIFFICULTY",
     BTN: Object.freeze({
       FULLSCREEN: "MENU_ENTER_FULLSCREEN",
       EXIT_FULLSCREEN: "MENU_EXIT_FULLSCREEN"
@@ -93,7 +95,8 @@ const SPRITE_SHEETS = Object.freeze({
 
 const HTML = Object.freeze({
   MENU: Object.freeze({
-    INPUT: "./nameInput.html"
+    INPUT: "./nameInput.html",
+    INPUT_DIFFICULTY: "./difficultyInput.html"
   })
 })
 

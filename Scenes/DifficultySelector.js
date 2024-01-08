@@ -1,14 +1,14 @@
-import { KEYS, STYLES, TEXT } from "../config.js";
+import { KEYS, STYLES } from "../config.js";
 import Player from "../Sprites/Player.js";
 
-export default class MenuScene extends Phaser.Scene {
+export default class DifficultySelectorScene extends Phaser.Scene {
   #soundBtnSelect;
   #soundBtnClick;
   #soundErr;
 
   constructor() {
     super({
-      key: KEYS.SCENE.MENU
+      key: KEYS.SCENE.DIFFICULTY_SELECTOR
     })
 
     this.#soundBtnSelect;
@@ -16,21 +16,8 @@ export default class MenuScene extends Phaser.Scene {
     this.#soundErr;
   }
 
-  init() {
-    console.log(`[${KEYS.SCENE.MENU}:init] Invoked`);
-
-    // fade out any music music from previous scenes.
-    const musicArray = this.sound.getAllPlaying();
-
-    this.tweens.add({
-      targets: musicArray,
-      volume: 0,
-      duration: 3_000
-    });
-  }
-
   create() {
-    console.log(`[${KEYS.SCENE.MENU}:create] Invoked`);
+    console.log(`[${KEYS.SCENE.DIFFICULTY_SELECTOR}:init] Invoked`);
 
     /*
       For FX transition, a coloured background is needed
@@ -46,37 +33,6 @@ export default class MenuScene extends Phaser.Scene {
   }
 
   #sound() {
-    const music01 = this.sound.add(KEYS.SOUND.BATTLE, {
-      loop: true,
-      volume: .3
-    });
-
-    const music02 = this.sound.add(KEYS.SOUND.NOMOREMAGIC, {
-      loop: true,
-      volume: .8
-    });
-
-    music01.play();
-    music02.play();
-
-    this.tweens.add({
-      targets: music01,
-      volume: {
-        from: 0,
-        to: .3
-      },
-      duration: 3_000
-    });
-
-    this.tweens.add({
-      targets: music02,
-      volume: {
-        from: 0,
-        to: .8
-      },
-      duration: 3_000
-    });
-
     this.#soundBtnSelect = this.sound.add(KEYS.SOUND.BTN.SELECT);
     this.#soundBtnClick = this.sound.add(KEYS.SOUND.BTN.CLICK);
     this.#soundErr = this.sound.add(KEYS.SOUND.ERR);
@@ -142,37 +98,20 @@ export default class MenuScene extends Phaser.Scene {
     const title = this.add.text(
       (this.game.config.width * .1) * 1.5,
       this.game.config.height * .28,
-      this.game.config.gameTitle,
+      "Select difficulty",
       STYLES.TEXT.TITLE
     );
 
     title.setOrigin(0);
 
-    const intro = this.add.text(title.x, title.y * 1.5, TEXT.INTRO);
-    intro.setStyle({
-      ...STYLES.TEXT.NORMAL,
-      color: "#aaa"
-    })
-    intro.setOrigin(0);
-
-    const input = this.add.dom(intro.x, intro.y * 1.5).createFromCache(KEYS.MENU.INPUT);
+    const btnIDs = ["difficultyEasy", "difficultyNormal", "difficultyHard"];
+    const input = this.add.dom(title.x, title.y * 1.5).createFromCache(KEYS.MENU.INPUT_DIFFICULTY);
     input.setOrigin(0);
 
-    // check if first name already exists
-    const sessionfirstName = sessionStorage.getItem("firstName");
-
-    if (sessionfirstName) {
-      const domElementInput = document.getElementById("firstName");
-      domElementInput.value = sessionfirstName;
-    }
-
-    const errText = this.add.text(input.x, (input.y + input.height) + 15, "", STYLES.TEXT.ERR);
-    errText.setVisible(false);
-
-    input.addListener("click input mouseover");
+    input.addListener("click mouseover");
 
     input.on("mouseover", (e) => {
-      if (e.target.id !== "beginGame") return;
+      if (!btnIDs.includes(e.target.id)) return;
       this.#soundBtnSelect.play();
     })
 
@@ -181,36 +120,38 @@ export default class MenuScene extends Phaser.Scene {
 
       menu.#soundBtnClick.play();
 
-      if (e.target.id !== "beginGame") return;
+      let difficultySelected = false;
 
-      const firstName = this.getChildByID("firstName").value;
-
-      if (firstName.length <= 2) {
-        errText.setText(TEXT.ERR.SHORT_NAME);
-        errText.setVisible(true);
-        menu.#soundErr.play();
-        return;
+      if (e.target.id === "difficultyEasy") {
+        sessionStorage.setItem("difficulty", "easy");
+        difficultySelected = true;
       }
 
-      sessionStorage.setItem("firstName", firstName);
+      if (e.target.id === "difficultyNormal") {
+        sessionStorage.setItem("difficulty", "normal");
+        difficultySelected = true;
+      }
 
-      const formElement = document.getElementById("formFirstName");
-      formElement.classList.add("hide");
+      if (e.target.id === "difficultyHard") {
+        sessionStorage.setItem("difficulty", "hard");
+        difficultySelected = true;
+      }
+
+      if (!difficultySelected) return;
+
+      const difficultySelector = document.getElementById("difficultySelector");
+      difficultySelector.classList.add("hide");
 
       const fx = menu.cameras.main.postFX.addWipe(0.1, 0, 0);
 
       menu.scene.transition({
-        target: KEYS.SCENE.DIFFICULTY_SELECTOR,
+        target: KEYS.SCENE.GAME,
         duration: 2000,
         moveBelow: true,
         onUpdate: (progress) => {
           fx.progress = progress;
         }
       });
-    });
-
-    input.on("input", (e) => {
-      errText.setVisible(false);
     });
   }
 }
