@@ -1,0 +1,199 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-weight: normal;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: #0e0d0b;
+  color: #fff;
+  font-family: "Vidaloka";
+  font-size: 16px;
+  text-wrap: pretty;
+}
+
+p {
+  font-size: 3rem;
+}
+
+#notifyLandscapeMode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 2rem;
+  height: 100dvh;
+  width: 100dvw;
+  padding: 2rem;
+  z-index: 1;
+  background: #1f0e1c;
+  text-align: center;
+}
+
+#notifyLandscapeMode h1 {
+  font-size: 3rem;
+  font-family: "Viaoda Libre";
+}
+
+#notifyLandscapeMode p {
+  font-size: 1.2rem;
+  font-family: "Vidaloka";
+}
+
+#notifyLandscapeMode img {
+  width: 100%;
+  animation: glow 3s ease-in-out infinite;
+}
+
+#notifyLandscapeMode button {
+  font-family: "Vidaloka";
+  font-size: 2rem;
+  padding: 1rem;
+  background: #2c121f;
+  color: #fff;
+  border: solid .2rem #e4943a;
+  border-radius: .5rem;
+  transform: scale(.9);
+  transition: 100ms ease-in-out;
+  transition-property: transform, opacity;
+  cursor: pointer;
+}
+
+/* ! NAME INPUT - START */
+form {
+  display: grid;
+  grid-template-columns: auto auto;
+  flex-direction: column;
+  gap: .5rem 1rem;
+  width: 100%;
+}
+
+form label, form input {
+  grid-column: 1;
+  font-size: 3rem;
+}
+
+form input, form input:autofill {
+  font-family: "Viaoda Libre";
+  background: transparent;
+  color: #e4943a;
+  outline: none;
+  border: none;
+  border-bottom: solid .1rem #e4943a;
+}
+
+input:placeholder-shown + button {
+  opacity: .3;
+  pointer-events: none;
+}
+
+button {
+  grid-column: 2;
+  font-family: "Vidaloka";
+  font-size: 3rem;
+  padding: 1rem 5rem;
+  background: #2c121f;
+  color: #fff;
+  border: solid .2rem #e4943a;
+  border-radius: .5rem;
+  transform: scale(.9);
+  transition: 100ms ease-in-out;
+  transition-property: transform, opacity;
+  cursor: pointer;
+}
+
+input:not(:placeholder-shown) + button:hover {
+  transform: scale(1);
+}
+
+form.hide {
+  animation: hide 500ms linear forwards;
+}
+/* ! NAME INPUT - END */
+
+/* ! DIFFICULTY INPUT - START */
+#difficultySelector {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  opacity: 0;
+  animation: show 500ms linear forwards;
+  animation-delay: 1s;
+}
+
+#difficultySelector.hide {
+  animation: hide 500ms linear forwards;
+}
+
+#difficultySelector article {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#difficultySelector p {
+  font-size: 2rem;
+  max-width: 20ch;
+  color: #aaa;
+  line-height: 3rem;
+}
+
+#difficultySelector button {
+  grid-column: 2;
+  font-family: "Vidaloka";
+  font-size: 3rem;
+  padding: 1rem 5rem;
+  background: #2c121f;
+  color: #fff;
+  border: solid .2rem #e4943a;
+  border-radius: .5rem;
+  scale: .9;
+  transition: 100ms ease-in-out;
+  transition-property: scale, opacity;
+  cursor: pointer;
+}
+
+#difficultySelector button:hover {
+  scale: 1;
+}
+/* ! DIFFICULTY INPUT - END */
+
+@keyframes glow {
+  0% {
+    opacity: .5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: .5;
+  }
+}
+
+@keyframes show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hide {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@media (orientation: landscape) {
+  #notifyLandscapeMode {
+    display: none;
+  }
+}
