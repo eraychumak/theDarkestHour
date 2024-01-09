@@ -1,10 +1,28 @@
 import { IMAGES, KEYS } from "../config.js";
+import Magic from "./Magic.js";
 
 export default class Player {
   #scene;
+  #soundShoot;
+  #soundWalking;
 
   constructor(scene, x, y) {
     this.#scene = scene;
+
+    this.bullets = this.#scene.physics.add.group({
+      classType: Magic,
+      immovable: true
+    });
+
+    this.damage = 10;
+    this.hp = 3;
+    this.dead = false;
+
+    this.difficulty = sessionStorage.getItem("difficulty");
+
+    if (this.difficulty === "hard") {
+      this.hp = 1;
+    }
 
     this.player = this.#scene.physics.add.sprite(x, y);
 
@@ -20,6 +38,14 @@ export default class Player {
 
     this.player.setCollideWorldBounds(true);
     this.player.play(KEYS.ANIMATION.OLD_MAN.IDLE);
+
+    this.#soundShoot = this.#scene.sound.add(KEYS.SOUND.MAGIC_SPARKLE);
+
+    this.#soundWalking = this.#scene.sound.add(KEYS.SOUND.FOOTSTEP, {
+      loop: true,
+      volume: .5,
+      rate: 1.2
+    });
   }
 
   get sprite() {
@@ -27,6 +53,8 @@ export default class Player {
   }
 
   enableControls() {
+    if (this.dead) return;
+
     this.joystick = this.#scene.add.circle(0, 0, 80, 0xffffff);
     this.joystick.setAlpha(.3);
     this.joystickHandle = this.#scene.add.circle(0, 0, 40, 0xffffff);
@@ -58,11 +86,11 @@ export default class Player {
 
     this.#scene.input.on("pointerup", (pointer) => {
       // prevent movement at the very top of the screen for menu controls
-
       if (pointer.y <= this.#scene.game.config.height * .1) return;
 
       pointerDown = false;
       this.joystickContainer.setAlpha(0.00000001);
+      this.#soundWalking.pause();
     });
 
     this.#scene.input.on('pointerdown', (pointer) => {
@@ -77,7 +105,10 @@ export default class Player {
       pointerDown = true;
 
       this.joystickContainer.setAlpha(1);
+
+      if (this.dead) return;
       this.player.play(KEYS.ANIMATION.OLD_MAN.WALK);
+      this.#soundWalking.play();
     });
 
     this.player.setMaxVelocity(50);
@@ -96,6 +127,8 @@ export default class Player {
 
       this.joystickHandle.x = dragX;
       this.joystickHandle.y = dragY;
+
+      if (this.dead) return;
 
       // walk left
       if (dragX < 0) {
@@ -119,9 +152,11 @@ export default class Player {
     });
 
     this.#scene.input.on('dragend', (pointer, gameObject) => {
-      // Reset joystick handle's position and alpha
+      // Reset joystick handle's position
       this.joystickHandle.x = 0;
       this.joystickHandle.y = 0;
+
+      if (this.dead) return;
 
       this.player.play(KEYS.ANIMATION.OLD_MAN.IDLE);
       this.player.body.reset(this.player.x, this.player.y)
@@ -134,7 +169,116 @@ export default class Player {
     this.firstName.setOrigin(.5);
   }
 
+  shoot() {
+    if (this.dead) return;
+
+    const bullet = this.bullets.get(this.player.x, this.player.y);
+    this.#soundShoot.play();
+
+    this.#scene.physics.add.collider(
+      bullet,
+      this.enemyTarget,
+      (magic, target) => {
+        magic.destroy();
+        target.hurt(this.damage);
+      }
+    );
+
+    this.#scene.physics.moveToObject(bullet, {
+      x: this.enemyTarget.x + this.enemyTarget.width / 2,
+      y: this.enemyTarget.y + this.enemyTarget.height / 2
+    }, 200);
+  }
+
+  hurt() {
+    if (this.dead) return;
+
+    this.player.play(KEYS.ANIMATION.OLD_MAN.HURT);
+    this.player.playAfterRepeat(KEYS.ANIMATION.OLD_MAN.WALK);
+    this.#soundWalking.play();
+
+    console.log(this.difficulty);
+    if (this.difficulty === "easy") {
+      this.hp -= .5;
+    } else {
+      this.hp -= 1;
+    }
+
+    this.updateHearts();
+
+    if (this.hp <= 0) {
+      this.player.setVelocity(0);
+      this.player.copyPosition(this.player);
+      this.player.play(KEYS.ANIMATION.OLD_MAN.DEATH);
+      this.dead = true;
+
+      setTimeout(() => {
+        this.#scene.scene.start(KEYS.SCENE.GAME_OVER, {
+          time: this.#scene.data.get("time")
+        });
+      }, 2_000);
+    }
+  }
+
+  updateHearts() {
+    const hearts = this.hearts.getChildren();
+
+    if (this.hp === 2) {
+      hearts[2].setAlpha(.1);
+    }
+
+    if (this.hp === 1) {
+      hearts[1].setAlpha(.1);
+      hearts[2].setAlpha(.1);
+    }
+
+    if (this.hp === 0) {
+      hearts[0].setAlpha(.1);
+      hearts[1].setAlpha(.1);
+      hearts[2].setAlpha(.1);
+    }
+
+    if (this.hp === 2.5) {
+      hearts[2].setAlpha(.5);
+    }
+
+    if (this.hp === 1.5) {
+      hearts[1].setAlpha(.5);
+    }
+
+    if (this.hp === .5) {
+      hearts[0].setAlpha(.5);
+    }
+  }
+
+  showHearts() {
+    this.hearts = this.#scene.add.group();
+
+    this.hearts.createMultiple({
+      key: KEYS.GAME.UI.HEART,
+      frameQuantity: this.hp,
+      setXY: { x: 20, y: 20, stepX: 60 },
+      setOrigin: { x: 0, y: 0 },
+      setScale: { x: 2, y: 2 }
+    });
+  }
+
+  updateCurrentTarget(target) {
+    this.enemyTarget = target;
+  }
+
+  enableShooting() {
+    if (this.dead) return;
+
+    setInterval(() => {
+      if (!this.enemyTarget) return;
+      this.shoot();
+    }, 5_000);
+  }
+
   update() {
+    if (this.dead) return;
+
     this.firstName.setPosition(
       this.player.x - (this.player.width * 1.5),
       this.player.y - (this.player.height * 1.8)
@@ -182,6 +326,12 @@ export default class Player {
       frames: scene.anims.generateFrameNumbers(KEYS.CHARACTERS.OLD_MAN, { frames: [ 15, 16, 17, 18, 19, 20 ] }),
       frameRate: 6,
       repeat: -1
+    });
+
+    scene.anims.create({
+      key: KEYS.ANIMATION.MAGIC.SHOOT,
+      frames: scene.anims.generateFrameNumbers(KEYS.GAME.MAGIC, { frames: [ 0, 1, 2, 3, 4 ] }),
+      frameRate: 6
     });
   }
 }

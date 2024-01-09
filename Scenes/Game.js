@@ -1,3 +1,4 @@
+import Howler from "../Sprites/Howler.js";
 import Player from "../Sprites/Player.js";
 import { KEYS, STYLES } from "../config.js";
 
@@ -44,9 +45,6 @@ export default class GameScene extends Phaser.Scene {
       },
       duration: 3_000
     });
-
-    const camera = this.cameras.main;
-    camera.postFX.addVignette(0.5, 0.5, 1);
 
     let data = [];
 
@@ -116,61 +114,119 @@ export default class GameScene extends Phaser.Scene {
 
     this.player = new Player(this, this.game.config.width / 2, this.game.config.height / 2);
     this.player.enableControls();
+    this.player.enableShooting();
+    this.player.showHearts();
+    this.player.updateHearts();
+
+    this.enemies = this.physics.add.group({
+      classType: Howler,
+      collideWorldBounds: true,
+      bounceX: 1,
+      bounceY: 1
+    });
 
     const playerSprite = this.player.sprite;
     playerSprite.setScale(2);
 
     this.physics.add.collider(playerSprite, [ collisionObjects ]);
 
-    const timer = this.add.text(
+    this.physics.add.collider(playerSprite, this.enemies, (_, enemy) => {
+      if (enemy.dead) return;
+      this.player.hurt();
+      enemy.attackPlayer();
+    });
+
+    const textTimer = this.add.text(
       this.game.config.width / 2,
       this.game.config.height * .01,
       "00:00",
       STYLES.TEXT.GAME
     );
 
-    timer.setPosition(
+    textTimer.setPosition(
       this.game.config.width / 2,
-      (timer.height / 2) + 10
+      (textTimer.height / 2) + 10
     );
 
-    timer.setDataEnabled();
-    timer.data.set("time", 0);
+    textTimer.setDataEnabled();
+    this.data.set("time", 0);
 
-    setInterval(() => {
-      const currentTime = timer.data.get("time");
-      const newTime = currentTime + 1;
+    // runs every second
+    this.time.addEvent({
+      delay: 1_000,
+      loop: true,
+      callback: this.timerHandler,
+      args: [this, textTimer, this.enemies, this.player.sprite]
+    });
 
-      const minutes = ("0" + Math.floor(newTime / 60)).slice(-2);
-      const seconds = ("0" + newTime % 60).slice(-2);
+    textTimer.setOrigin(.5);
 
-      timer.data.set("time", newTime);
-      timer.setText(`${minutes}:${seconds}`);
-    }, 1_000);
-
-    timer.setOrigin(.5);
-
-    const btn = this.add.image(
+    const btnPause = this.add.image(
       this.game.config.width - 48,
       48,
       KEYS.GAME.BTN.PAUSE
     );
 
-    btn.setOrigin(.5);
-    btn.setInteractive();
+    btnPause.setOrigin(.5);
+    btnPause.setInteractive();
 
-    btn.on("pointerdown", () => {
+    btnPause.on("pointerdown", () => {
       this.scene.pause();
       this.scene.launch(KEYS.SCENE.PAUSE, {
-        time: timer.data.get("time")
+        time: this.data.get("time")
       });
     });
 
-    btn.on("pointerover", () => btn.setScale(1.1));
-    btn.on("pointerout", () => btn.setScale(1));
+    btnPause.on("pointerover", () => btnPause.setScale(1.1));
+    btnPause.on("pointerout", () => btnPause.setScale(1));
+  }
+
+  timerHandler(scene, textTimer, enemies, player) {
+    const currentTime = scene.data.get("time");
+    const newTime = currentTime + 1;
+
+    const minutes = ("0" + Math.floor(newTime / 60)).slice(-2);
+    const seconds = ("0" + newTime % 60).slice(-2);
+
+    scene.data.set("time", newTime);
+    textTimer.setText(`${minutes}:${seconds}`);
+
+    if (newTime <= 120) { sessionStorage.setItem("level", 1); }
+    if (newTime > 120 && newTime <= 240) { sessionStorage.setItem("level", 2); }
+    if (newTime > 240 && newTime <= 360) { sessionStorage.setItem("level", 3); }
+    if (newTime > 360 && newTime <= 480) { sessionStorage.setItem("level", 5); }
+
+    const enemyCount = enemies.getLength();
+
+    if (newTime % 5 === 0) {
+      let quantity = 1;
+
+      if (newTime <= 120 && enemyCount < 10) {
+        quantity = Phaser.Math.Between(1, 5);
+      }
+
+      if ((newTime > 120 && newTime <= 240) && enemyCount < 15) {
+        quantity = Phaser.Math.Between(1, 4);
+      }
+
+      if ((newTime > 240 && newTime <= 360) && enemyCount < 20) {
+        quantity = Phaser.Math.Between(1, 3);
+      }
+
+      if ((newTime > 360 && newTime <= 480) && enemyCount < 25) {
+        quantity = Phaser.Math.Between(1, 2);
+      }
+
+      for (let x = 0; x < quantity; x++) {
+        Howler.spawn(scene, enemies, player);
+      }
+    }
   }
 
   update() {
     this.player.update();
+
+    const closestEnemyToPlayer = this.physics.closest(this.player.sprite, this.enemies.getMatching("dead", false));
+    this.player.updateCurrentTarget(closestEnemyToPlayer);
   }
 }
