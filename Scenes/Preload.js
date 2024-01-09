@@ -16,7 +16,6 @@ export default class PreloadScene extends Phaser.Scene {
     console.log(`[${KEYS.SCENE.PRELOAD}:preload] Invoked`);
 
     this.load.html(KEYS.MENU.INPUT, HTML.MENU.INPUT);
-    this.load.html(KEYS.MENU.INPUT_DIFFICULTY, HTML.MENU.INPUT_DIFFICULTY);
 
     this.load.audio(KEYS.SOUND.BATTLE, [SOUND.BATTLE]);
     this.load.audio(KEYS.SOUND.NOMOREMAGIC, [SOUND.NOMOREMAGIC]);
@@ -40,6 +39,8 @@ export default class PreloadScene extends Phaser.Scene {
 
     this.load.image(KEYS.GAME.GROUND_TILES, IMAGES.GAME.TILESETS.GROUND);
     this.load.atlas(KEYS.GAME.GROUND_OBJECTS, SPRITE_SHEETS.GROUND_OBJECTS.PNG, SPRITE_SHEETS.GROUND_OBJECTS.JSON);
+
+    this.load.image(KEYS.MENU.BTN.BORDER, IMAGES.MENU.BTN.BORDER);
   }
 
   create () {
