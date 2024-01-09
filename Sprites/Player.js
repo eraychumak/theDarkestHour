@@ -1,4 +1,4 @@
-import { IMAGES, KEYS } from "../config.js";
+import { ACHIEVEMENTS, IMAGES, KEYS } from "../config.js";
 import Magic from "./Magic.js";
 
 export default class Player {
@@ -181,6 +181,14 @@ export default class Player {
       (magic, target) => {
         magic.destroy();
         target.hurt(this.damage);
+
+        const defeatedHowlers = localStorage.getItem("defeatedHowlers") || 0;
+        localStorage.setItem("defeatedHowlers", defeatedHowlers + 1);
+
+        if (defeatedHowlers + 1 >= 200) {
+          localStorage.setItem(ACHIEVEMENTS.HOWLER_HUNTER, true);
+
+        }
       }
     );
 
@@ -197,7 +205,6 @@ export default class Player {
     this.player.playAfterRepeat(KEYS.ANIMATION.OLD_MAN.WALK);
     this.#soundWalking.play();
 
-    console.log(this.difficulty);
     if (this.difficulty === "easy") {
       this.hp -= .5;
     } else {
@@ -212,9 +219,15 @@ export default class Player {
       this.player.play(KEYS.ANIMATION.OLD_MAN.DEATH);
       this.dead = true;
 
+      const elapsedTime = this.#scene.data.get("time");
+
+      if (elapsedTime <= 60) {
+        localStorage.setItem(ACHIEVEMENTS.FASHIONABLY_EARLY, true);
+      }
+
       setTimeout(() => {
         this.#scene.scene.start(KEYS.SCENE.GAME_OVER, {
-          time: this.#scene.data.get("time")
+          time: elapsedTime
         });
       }, 2_000);
     }

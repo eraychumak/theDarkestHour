@@ -1,4 +1,4 @@
-import { KEYS, STYLES, TEXT } from "../config.js";
+import { ACHIEVEMENTS, KEYS, STYLES, TEXT } from "../config.js";
 import Player from "../Sprites/Player.js";
 import TextButton from "../Sprites/TextButton.js";
 
@@ -186,9 +186,15 @@ export default class MenuScene extends Phaser.Scene {
       }
 
       sessionStorage.setItem("firstName", firstName);
+      localStorage.setItem(ACHIEVEMENTS.NEW_ADVENTURER, true);
 
       this.scene.start(KEYS.SCENE.DIFFICULTY_SELECTOR);
     });
+
+    const achievementsBtn = new TextButton(this, playBtn.x + playBtn.width + 20, playBtn.y, "Achievements", () => {
+      this.scene.start(KEYS.SCENE.ACHIEVEMENTS);
+
+    }, { width: 350});
 
     playBtn.enableGlow();
   }

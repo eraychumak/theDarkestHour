@@ -1,6 +1,6 @@
 import Howler from "../Sprites/Howler.js";
 import Player from "../Sprites/Player.js";
-import { KEYS, STYLES } from "../config.js";
+import { ACHIEVEMENTS, KEYS, STYLES } from "../config.js";
 
 // .5% probability of getting True
 const Probability_005 = () => Math.random() < .005;
@@ -220,6 +220,10 @@ export default class GameScene extends Phaser.Scene {
       for (let x = 0; x < quantity; x++) {
         Howler.spawn(scene, enemies, player);
       }
+    }
+
+    if (newTime >= 60) {
+      localStorage.setItem(ACHIEVEMENTS.BLINK_OF_AN_EYE, true);
     }
   }
 

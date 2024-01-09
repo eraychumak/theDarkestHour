@@ -58,6 +58,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.atlas(KEYS.GAME.GROUND_OBJECTS, SPRITE_SHEETS.GROUND_OBJECTS.PNG, SPRITE_SHEETS.GROUND_OBJECTS.JSON);
 
     this.load.image(KEYS.MENU.BTN.BORDER, IMAGES.MENU.BTN.BORDER);
+    this.load.image(KEYS.MENU.ACHIEVEMENT.BORDER, IMAGES.MENU.ACHIEVEMENT.BORDER);
   }
 
   create () {
@@ -66,6 +67,6 @@ export default class PreloadScene extends Phaser.Scene {
     Player.loadAnimations(this);
     Howler.loadAnimations(this);
 
-    this.scene.start(KEYS.SCENE.MENU)
+    this.scene.start(KEYS.SCENE.MENU);
   }
 }

@@ -6,6 +6,7 @@ const KEYS = Object.freeze({
     GAME: "SCENE_GAME",
     PAUSE: "SCENE_PAUSE",
     GAME_OVER: "SCENE_GAME_OVER",
+    ACHIEVEMENTS: "SCENE_ACHIEVEMENTS"
   }),
   MENU: Object.freeze({
     BG: "MENU_BG",
@@ -16,6 +17,9 @@ const KEYS = Object.freeze({
       FULLSCREEN: "MENU_ENTER_FULLSCREEN",
       EXIT_FULLSCREEN: "MENU_EXIT_FULLSCREEN",
       BORDER: "MENU_BUTTON_BORDER"
+    }),
+    ACHIEVEMENT: Object.freeze({
+      BORDER: "MENU_ACHIEVEMENT_BORDER"
     })
   }),
   GAME: Object.freeze({
@@ -83,6 +87,9 @@ const IMAGES = Object.freeze({
       EXIT_FULLSCREEN: "./assets/menu/exitFullscreen.png",
       PAUSE: "./assets/menu/pause.png",
       BORDER: "./assets/menu/btnBorder.png"
+    }),
+    ACHIEVEMENT: Object.freeze({
+      BORDER: "./assets/menu/achievementBorder.png"
     })
   }),
   GAME: Object.freeze({
@@ -150,6 +157,13 @@ const SIZES = Object.freeze({
   ERR: "2rem"
 });
 
+const ACHIEVEMENTS = Object.freeze({
+  NEW_ADVENTURER: "ACHIEVEMENT_NEW_ADVENTURE",
+  BLINK_OF_AN_EYE: "ACHIEVEMENT_BLINK_OF_AN_EYE",
+  HOWLER_HUNTER: "ACHIEVEMENT_HOWLER_HUNTER",
+  FASHIONABLY_EARLY: "ACHIEVEMENT_FASHIONABLY_EARLY"
+});
+
 const STYLES = Object.freeze({
   TEXT: Object.freeze({
     TITLE: { font: `${SIZES.TITLE} 'Viaoda Libre'` },
@@ -188,5 +202,6 @@ export {
   SOUND,
   STYLES,
   TEXT,
-  SPRITE_SHEETS
+  SPRITE_SHEETS,
+  ACHIEVEMENTS
 };
