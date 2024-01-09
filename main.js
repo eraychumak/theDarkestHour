@@ -3,6 +3,7 @@ import MenuScene from "./Scenes/Menu.js";
 import GameScene from "./Scenes/Game.js";
 import DifficultySelectorScene from "./Scenes/DifficultySelector.js";
 import PauseScene from "./Scenes/Pause.js";
+import GameOverScene from "./Scenes/GameOver.js";
 
 const config = {
   type: Phaser.AUTO,
@@ -10,7 +11,7 @@ const config = {
   dom: {
     createContainer: true
   },
-  scene: [PreloadScene, MenuScene, DifficultySelectorScene, GameScene, PauseScene],
+  scene: [PreloadScene, MenuScene, DifficultySelectorScene, GameScene, PauseScene, GameOverScene],
   backgroundColor: "#1F0E1C",
   scale: {
     width: 1920,

@@ -5,6 +5,7 @@ const KEYS = Object.freeze({
     DIFFICULTY_SELECTOR: "SCENE_DIFFICULTY_SELECTOR",
     GAME: "SCENE_GAME",
     PAUSE: "SCENE_PAUSE",
+    GAME_OVER: "SCENE_GAME_OVER",
   }),
   MENU: Object.freeze({
     BG: "MENU_BG",
@@ -22,15 +23,26 @@ const KEYS = Object.freeze({
     GROUND_TILES: "GAME_GROUND_TILES",
     BTN: Object.freeze({
       PAUSE: "GAME_BTN_PAUSE"
-    })
+    }),
+    UI: Object.freeze({
+      HEART: "GAME_UI_HEART"
+    }),
+    MAGIC: "GAME_MAGIC"
   }),
   CHARACTERS: Object.freeze({
-    OLD_MAN: "OLD_MAN"
+    OLD_MAN: "OLD_MAN",
+    HOWLER: "HOWLER"
   }),
   SOUND: Object.freeze({
     BATTLE: "SOUND_BATTLE",
     NOMOREMAGIC: "SOUND_NO_MORE_MAGIC",
     RISING: "SOUND_RISING",
+    FOOTSTEP: "SOUND_FOOTSTEP",
+    MAGIC_SPARKLE: "SOUND_MAGIC_SPARKLE",
+    HOWLER: Object.freeze({
+      HURT: "SOUND_HOWLER_HURT",
+      ATTACK: "SOUND_HOWLER_ATTACK"
+    }),
     BTN: Object.freeze({
       SELECT: "SOUND_BTN_SELECT",
       CLICK: "SOUND_BTN_CLICK"
@@ -45,6 +57,18 @@ const KEYS = Object.freeze({
       HURT: "OLD_MAN_HURT",
       IDLE: "OLD_MAN_IDLE",
       WALK: "OLD_MAN_WALK"
+    }),
+    HOWLER: Object.freeze({
+      STILL: "HOWLER_STILL",
+      ATTACK: "HOWLER_ATTACK",
+      DEATH: "HOWLER_DEATH",
+      HURT: "HOWLER_HURT",
+      IDLE: "HOWLER_IDLE",
+      WALK: "HOWLER_WALK",
+      RUN_ATTACK: "HOWLER_RUN_AND_ATTACK"
+    }),
+    MAGIC: Object.freeze({
+      SHOOT: "MAGIC_SHOOT"
     })
   })
 });
@@ -67,6 +91,9 @@ const IMAGES = Object.freeze({
     }),
     BTN: Object.freeze({
       PAUSE: "./assets/game/pause.png"
+    }),
+    UI: Object.freeze({
+      HEART: "./assets/game/heart.png"
     })
   })
 });
@@ -75,6 +102,12 @@ const SOUND = Object.freeze({
   BATTLE: "./assets/sound/battleTheme.mp3",
   NOMOREMAGIC: "./assets/sound/noMoreMagic.mp3",
   RISING: "./assets/sound/rising.mp3",
+  FOOTSTEP: "./assets/sound/footstep_grass.wav",
+  MAGIC_SPARKLE: "./assets/sound/magic_sparkle.wav",
+  HOWLER: Object.freeze({
+    HURT: "./assets/sound/howler_hurt.mp3",
+    ATTACK: "./assets/sound/howler_attack.mp3"
+  }),
   BTN: Object.freeze({
     SELECT: "./assets/sound/select_001.ogg",
     CLICK: "./assets/sound/click_002.ogg"
@@ -87,11 +120,19 @@ const SPRITE_SHEETS = Object.freeze({
     OLD_MAN: Object.freeze({
       PNG: "./assets/game/characters/OldMan.png",
       JSON: "./assets/game/characters/OldMan.json"
-    })
+    }),
+    HOWLER: Object.freeze({
+      PNG: "./assets/game/characters/Howler.png",
+      JSON: "./assets/game/characters/Howler.json"
+    }),
   }),
   GROUND_OBJECTS: Object.freeze({
     PNG: "./assets/game/groundObjects/spritesheet.png",
     JSON: "./assets/game/groundObjects/spritesheet.json"
+  }),
+  MAGIC: Object.freeze({
+    PNG: "./assets/game/magic/spritesheet.png",
+    JSON: "./assets/game/magic/spritesheet.json"
   })
 });
 
