@@ -4,16 +4,17 @@ const KEYS = Object.freeze({
     MENU: "SCENE_MENU",
     DIFFICULTY_SELECTOR: "SCENE_DIFFICULTY_SELECTOR",
     GAME: "SCENE_GAME",
+    PAUSE: "SCENE_PAUSE",
   }),
   MENU: Object.freeze({
     BG: "MENU_BG",
     ART: "MENU_ART",
     SHIELD: "MENU_SHIELD",
     INPUT: "MENU_INPUT_NAME",
-    INPUT_DIFFICULTY: "MENU_INPUT_DIFFICULTY",
     BTN: Object.freeze({
       FULLSCREEN: "MENU_ENTER_FULLSCREEN",
-      EXIT_FULLSCREEN: "MENU_EXIT_FULLSCREEN"
+      EXIT_FULLSCREEN: "MENU_EXIT_FULLSCREEN",
+      BORDER: "MENU_BUTTON_BORDER"
     })
   }),
   GAME: Object.freeze({
@@ -56,7 +57,8 @@ const IMAGES = Object.freeze({
     BTN: Object.freeze({
       FULLSCREEN: "./assets/menu/fullscreen.png",
       EXIT_FULLSCREEN: "./assets/menu/exitFullscreen.png",
-      PAUSE: "./assets/menu/pause.png"
+      PAUSE: "./assets/menu/pause.png",
+      BORDER: "./assets/menu/btnBorder.png"
     })
   }),
   GAME: Object.freeze({
@@ -95,8 +97,7 @@ const SPRITE_SHEETS = Object.freeze({
 
 const HTML = Object.freeze({
   MENU: Object.freeze({
-    INPUT: "./nameInput.html",
-    INPUT_DIFFICULTY: "./difficultyInput.html"
+    INPUT: "./nameInput.html"
   })
 })
 
@@ -104,6 +105,7 @@ const SIZES = Object.freeze({
   TITLE: "6rem",
   H1: "4rem",
   NORMAL: "3rem",
+  SMALL: "2rem",
   ERR: "2rem"
 });
 
@@ -111,6 +113,10 @@ const STYLES = Object.freeze({
   TEXT: Object.freeze({
     TITLE: { font: `${SIZES.TITLE} 'Viaoda Libre'` },
     NORMAL: { font: `${SIZES.NORMAL} 'Vidaloka'` },
+    SMALL: {
+      font: `${SIZES.SMALL} 'Vidaloka'`,
+      color: "#aaa",
+    },
     GAME: { font: `${SIZES.NORMAL} 'Viga'`},
     ERR: {
       font: `${SIZES.ERR} 'Vidaloka Regular'`,
