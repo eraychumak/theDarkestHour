@@ -1,5 +1,6 @@
 import { KEYS, STYLES, TEXT } from "../config.js";
 import Player from "../Sprites/Player.js";
+import TextButton from "../Sprites/TextButton.js";
 
 export default class MenuScene extends Phaser.Scene {
   #soundBtnSelect;
@@ -157,6 +158,7 @@ export default class MenuScene extends Phaser.Scene {
 
     const input = this.add.dom(intro.x, intro.y * 1.5).createFromCache(KEYS.MENU.INPUT);
     input.setOrigin(0);
+    input.addListener("click input mouseover");
 
     // check if first name already exists
     const sessionfirstName = sessionStorage.getItem("firstName");
@@ -169,21 +171,12 @@ export default class MenuScene extends Phaser.Scene {
     const errText = this.add.text(input.x, (input.y + input.height) + 15, "", STYLES.TEXT.ERR);
     errText.setVisible(false);
 
-    input.addListener("click input mouseover");
+    input.on("input", (e) => {
+      errText.setVisible(false);
+    });
 
-    input.on("mouseover", (e) => {
-      if (e.target.id !== "beginGame") return;
-      this.#soundBtnSelect.play();
-    })
-
-    input.on("click", function(e) {
-      e.preventDefault();
-
-      menu.#soundBtnClick.play();
-
-      if (e.target.id !== "beginGame") return;
-
-      const firstName = this.getChildByID("firstName").value;
+    const playBtn = new TextButton(this, input.x + input.width + 20, input.y + (input.height / 4), "Play", () => {
+      const firstName = document.getElementById("firstName").value;
 
       if (firstName.length <= 2) {
         errText.setText(TEXT.ERR.SHORT_NAME);
@@ -194,23 +187,9 @@ export default class MenuScene extends Phaser.Scene {
 
       sessionStorage.setItem("firstName", firstName);
 
-      const formElement = document.getElementById("formFirstName");
-      formElement.classList.add("hide");
-
-      const fx = menu.cameras.main.postFX.addWipe(0.1, 0, 0);
-
-      menu.scene.transition({
-        target: KEYS.SCENE.DIFFICULTY_SELECTOR,
-        duration: 2000,
-        moveBelow: true,
-        onUpdate: (progress) => {
-          fx.progress = progress;
-        }
-      });
+      this.scene.start(KEYS.SCENE.DIFFICULTY_SELECTOR);
     });
 
-    input.on("input", (e) => {
-      errText.setVisible(false);
-    });
+    playBtn.enableGlow();
   }
 }

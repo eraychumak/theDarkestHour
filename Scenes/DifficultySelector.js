@@ -1,5 +1,6 @@
 import { KEYS, STYLES } from "../config.js";
 import Player from "../Sprites/Player.js";
+import TextButton from "../Sprites/TextButton.js";
 
 export default class DifficultySelectorScene extends Phaser.Scene {
   #soundBtnSelect;
@@ -92,9 +93,20 @@ export default class DifficultySelectorScene extends Phaser.Scene {
     );
   }
 
-  #text() {
-    const menu = this;
+  #startGame() {
+    const fx = this.cameras.main.postFX.addWipe(0.1, 0, 0);
 
+    this.scene.transition({
+      target: KEYS.SCENE.GAME,
+      duration: 2000,
+      moveBelow: true,
+      onUpdate: (progress) => {
+        fx.progress = progress;
+      }
+    });
+  }
+
+  #text() {
     const title = this.add.text(
       (this.game.config.width * .1) * 1.5,
       this.game.config.height * .28,
@@ -104,54 +116,40 @@ export default class DifficultySelectorScene extends Phaser.Scene {
 
     title.setOrigin(0);
 
-    const btnIDs = ["difficultyEasy", "difficultyNormal", "difficultyHard"];
-    const input = this.add.dom(title.x, title.y * 1.5).createFromCache(KEYS.MENU.INPUT_DIFFICULTY);
-    input.setOrigin(0);
-
-    input.addListener("click mouseover");
-
-    input.on("mouseover", (e) => {
-      if (!btnIDs.includes(e.target.id)) return;
-      this.#soundBtnSelect.play();
-    })
-
-    input.on("click", function(e) {
-      e.preventDefault();
-
-      menu.#soundBtnClick.play();
-
-      let difficultySelected = false;
-
-      if (e.target.id === "difficultyEasy") {
-        sessionStorage.setItem("difficulty", "easy");
-        difficultySelected = true;
-      }
-
-      if (e.target.id === "difficultyNormal") {
-        sessionStorage.setItem("difficulty", "normal");
-        difficultySelected = true;
-      }
-
-      if (e.target.id === "difficultyHard") {
-        sessionStorage.setItem("difficulty", "hard");
-        difficultySelected = true;
-      }
-
-      if (!difficultySelected) return;
-
-      const difficultySelector = document.getElementById("difficultySelector");
-      difficultySelector.classList.add("hide");
-
-      const fx = menu.cameras.main.postFX.addWipe(0.1, 0, 0);
-
-      menu.scene.transition({
-        target: KEYS.SCENE.GAME,
-        duration: 2000,
-        moveBelow: true,
-        onUpdate: (progress) => {
-          fx.progress = progress;
-        }
-      });
+    const btnEasy = new TextButton(this, title.x, title.y * 1.5, "Easy", () => {
+      sessionStorage.setItem("difficulty", "easy");
+      this.#startGame();
     });
+
+    // ? Description - Difficulty Mode - Easy
+    this.add.text(
+      btnEasy.x, btnEasy.y * 1.3,
+      "Take half the damage from enemies—lose only half a heart per hit.",
+      {...STYLES.TEXT.SMALL, wordWrap: { width: 340 }, lineSpacing: 18}
+    );
+
+    const btnNormal = new TextButton(this, (btnEasy.x + btnEasy.width) + 150, btnEasy.y, "Normal", () => {
+      sessionStorage.setItem("difficulty", "normal");
+      this.#startGame();
+    });
+
+    // ? Description - Difficulty Mode - Normal
+    this.add.text(
+      btnNormal.x, btnNormal.y * 1.3,
+      "Face enemies at standard difficulty—1 hit equals 1 heart lost.",
+      {...STYLES.TEXT.SMALL, wordWrap: { width: 340 }, lineSpacing: 18}
+    );
+
+    const btnHard = new TextButton(this, (btnNormal.x + btnNormal.width) + 150, btnNormal.y, "Hard", () => {
+      sessionStorage.setItem("difficulty", "hard");
+      this.#startGame();
+    });
+
+    // ? Description - Difficulty Mode - Hard
+    this.add.text(
+      btnHard.x, btnHard.y * 1.3,
+      "Brace yourself with just 1 heart—challenge accepted?",
+      {...STYLES.TEXT.SMALL, wordWrap: { width: 340 }, lineSpacing: 18}
+    );
   }
 }
