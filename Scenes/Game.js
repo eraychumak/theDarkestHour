@@ -160,7 +160,10 @@ export default class GameScene extends Phaser.Scene {
     btn.setInteractive();
 
     btn.on("pointerdown", () => {
-      this.scene.start(KEYS.SCENE.MENU);
+      this.scene.pause();
+      this.scene.launch(KEYS.SCENE.PAUSE, {
+        time: timer.data.get("time")
+      });
     });
 
     btn.on("pointerover", () => btn.setScale(1.1));

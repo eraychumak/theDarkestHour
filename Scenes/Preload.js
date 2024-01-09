@@ -47,6 +47,6 @@ export default class PreloadScene extends Phaser.Scene {
     console.log(`[${KEYS.SCENE.PRELOAD}:create] Invoked`);
 
     Player.loadAnimations(this);
-    this.scene.start(KEYS.SCENE.MENU);
+    this.scene.start(KEYS.SCENE.MENU)
   }
 }
