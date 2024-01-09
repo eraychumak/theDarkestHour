@@ -5,7 +5,7 @@ export default class TextButton {
   #soundBtnSelect;
   #soundBtnClick;
 
-  constructor(scene, x, y, label, callback) {
+  constructor(scene, x, y, label, callback, config = {}) {
     this.#scene = scene;
 
     this.#soundBtnSelect = this.#scene.sound.add(KEYS.SOUND.BTN.SELECT);
@@ -13,8 +13,8 @@ export default class TextButton {
 
     this.x = x;
     this.y = y;
-    this.width = 250;
-    this.height = 100;
+    this.width = config.width || 250;
+    this.height = config.height || 100;
 
     // x, y, texture, frame, width, height, leftCut
     const panel = this.#scene.add.nineslice(0, 0, KEYS.MENU.BTN.BORDER, 0, this.width, this.height, 12, 12, 12, 12);
