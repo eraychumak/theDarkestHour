@@ -7,7 +7,9 @@ const KEYS = Object.freeze({
     PAUSE: "SCENE_PAUSE",
     GAME_OVER: "SCENE_GAME_OVER",
     ACHIEVEMENTS: "SCENE_ACHIEVEMENTS",
-    LEVEL_UP: "SCENE_LEVEL_UP"
+    LEVEL_UP: "SCENE_LEVEL_UP",
+    HOW_TO_PLAY: "SCENE_HOW_TO_PLAY",
+    MODE_SELECTOR: "SCENE_MODE_SELECTOR"
   }),
   MENU: Object.freeze({
     BG: "MENU_BG",
@@ -190,6 +192,15 @@ const TEXT = Object.freeze({
     "In a land of myth and a time of magic,",
     "the destiny of a great kingdom rests",
     "on the shoulders of a young person."
+  ],
+  HOW_TO: [
+    "You shoot automatically at the nearest enemy.",
+    "You can gain EXP, which allows you to level up",
+    "and upgrade your abilities. To move, press anywhere",
+    "on the screen and a joystick will appear for you to",
+    "point in the direction you want to go.",
+    "",
+    "Survive as long as possible."
   ],
   ERR: Object.freeze({
     SHORT_NAME: [

@@ -6,7 +6,9 @@ export default class Player {
   #soundShoot;
   #soundWalking;
 
-  constructor(scene, x, y) {
+  constructor(scene, x, y, id) {
+    this.instanceID = id;
+
     this.#scene = scene;
 
     this.bullets = this.#scene.physics.add.group({
@@ -23,6 +25,7 @@ export default class Player {
     this.projectiles = 1;
     this.cooldown = 5_000;
 
+    this.mode = sessionStorage.getItem("mode");
     this.difficulty = sessionStorage.getItem("gameDifficulty");
 
     if (this.difficulty === "hard") {
@@ -57,6 +60,20 @@ export default class Player {
     return this.player;
   }
 
+  movementWithinBoundary(pointer) {
+    if (this.mode === "pvc") return true;
+
+    if (this.instanceID === 0) {
+      return pointer.worldX >= this.#scene.game.config.width / 2;
+    }
+
+    if (this.instanceID === 1) {
+      return pointer.worldX <= this.#scene.game.config.width / 2;
+    }
+
+    return false;
+  }
+
   enableControls() {
     if (this.dead) return;
 
@@ -78,6 +95,8 @@ export default class Player {
     let pointerDown = false;
 
     this.#scene.input.on("pointermove", (pointer) => {
+      if (!this.movementWithinBoundary(pointer)) return;
+
       // prevent movement at the very top of the screen for menu controls
       if (pointer.y <= this.#scene.game.config.height * .1) return;
 
@@ -90,6 +109,8 @@ export default class Player {
     });
 
     this.#scene.input.on("pointerup", (pointer) => {
+      if (!this.movementWithinBoundary(pointer)) return;
+
       // prevent movement at the very top of the screen for menu controls
       if (pointer.y <= this.#scene.game.config.height * .1) return;
 
@@ -99,6 +120,8 @@ export default class Player {
     });
 
     this.#scene.input.on('pointerdown', (pointer) => {
+      if (!this.movementWithinBoundary(pointer)) return;
+
       // prevent movement at the very top of the screen for menu controls
       if (pointer.y <= this.#scene.game.config.height * .1) return;
 
@@ -119,6 +142,8 @@ export default class Player {
     this.player.setMaxVelocity(50);
 
     this.#scene.input.on('drag', (pointer, gameObject, dragX, dragY) => {
+      if (!this.movementWithinBoundary(pointer)) return;
+
       // ? updates joystick handle position within the container
       const angle = Phaser.Math.Angle.Between(this.joystick.x, this.joystick.y, dragX, dragY);
       let distance = Phaser.Math.Distance.Between(this.joystick.x, this.joystick.y, dragX, dragY);
@@ -166,8 +191,15 @@ export default class Player {
       this.player.play(KEYS.ANIMATION.OLD_MAN.IDLE);
       this.player.body.reset(this.player.x, this.player.y)
     });
+  }
 
-    const firstName = sessionStorage.getItem("firstName");
+  showName() {
+    let firstName = sessionStorage.getItem("firstName");
+
+    if (this.mode === "pvp" && this.instanceID === 1) {
+      firstName = "Team Mate";
+    }
+
     this.firstName = this.#scene.add.text(this.player.x + 20, this.player.y - (this.player.height * 2), firstName, {
       font: `12px 'Viga'`
     });
@@ -239,6 +271,7 @@ export default class Player {
       this.dead = true;
 
       const elapsedTime = this.#scene.data.get("time");
+      const howlerDeaths = this.#scene.data.get("howlerDeaths");
 
       if (elapsedTime <= 60) {
         localStorage.setItem(ACHIEVEMENTS.FASHIONABLY_EARLY, true);
@@ -246,7 +279,8 @@ export default class Player {
 
       setTimeout(() => {
         this.#scene.scene.start(KEYS.SCENE.GAME_OVER, {
-          time: elapsedTime
+          time: elapsedTime,
+          howlerDeaths
         });
       }, 2_000);
     }
@@ -269,10 +303,18 @@ export default class Player {
   showHearts() {
     this.hearts = this.#scene.add.group();
 
+    let y = 20;
+
+    if (this.mode === "pvp") {
+      if (this.instanceID === 1) {
+        y += 100;
+      }
+    }
+
     this.hearts.createMultiple({
       key: KEYS.GAME.UI.HEART,
       frameQuantity: this.hp,
-      setXY: { x: 20, y: 20, stepX: 60 },
+      setXY: { x: 20, y, stepX: 60 },
       setOrigin: { x: 0, y: 0 },
       setScale: { x: 2, y: 2 }
     });

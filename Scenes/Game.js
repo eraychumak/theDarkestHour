@@ -15,10 +15,11 @@ export default class GameScene extends Phaser.Scene {
   constructor() {
     super({
       key: KEYS.SCENE.GAME
-    })
+    });
   }
 
   init() {
+    console.log(`[${KEYS.SCENE.GAME}:init] Invoked`);
     // fade out any music music from previous scenes.
     const musicArray = this.sound.getAllPlaying();
 
@@ -29,6 +30,7 @@ export default class GameScene extends Phaser.Scene {
     });
 
     sessionStorage.setItem("gameLevel", 0);
+    this.mode = sessionStorage.getItem("mode");
   }
 
   create() {
@@ -114,12 +116,26 @@ export default class GameScene extends Phaser.Scene {
       }
     });
 
-    this.player = new Player(this, this.game.config.width / 2, this.game.config.height / 2);
+    this.player = new Player(this, this.game.config.width / 2, this.game.config.height / 2, 0);
     this.player.enableControls();
     this.player.enableShooting();
+    this.player.showName();
     this.player.showHearts();
     this.player.updateHearts();
     this.player.showEXP();
+
+    const playerSprite = this.player.sprite;
+    playerSprite.setScale(2);
+
+    console.log(this.mode);
+
+    if (this.mode === "pvp") {
+      this.player2 = new Player(this, (this.game.config.width / 2) - 100, this.game.config.height / 2, 1);
+      this.player2.enableControls();
+      this.player2.showName();
+      this.player2.showHearts();
+      this.player2.updateHearts();
+    }
 
     this.enemies = this.physics.add.group({
       classType: Howler,
@@ -128,11 +144,19 @@ export default class GameScene extends Phaser.Scene {
       bounceY: 1
     });
 
-    const playerSprite = this.player.sprite;
-    playerSprite.setScale(2);
+    if (this.mode === "pvp") {
+      const player2Sprite = this.player2.sprite;
+      player2Sprite.setScale(2);
+
+      this.physics.add.collider(player2Sprite, [ collisionObjects ]);
+      this.physics.add.collider(player2Sprite, this.enemies, (_, enemy) => {
+        if (enemy.dead) return;
+        this.player2.hurt();
+        enemy.attackPlayer();
+      });
+    }
 
     this.physics.add.collider(playerSprite, [ collisionObjects ]);
-
     this.physics.add.collider(playerSprite, this.enemies, (_, enemy) => {
       if (enemy.dead) return;
       this.player.hurt();
@@ -154,12 +178,18 @@ export default class GameScene extends Phaser.Scene {
     textTimer.setDataEnabled();
     this.data.set("time", 0);
 
+    const players = [this.player.sprite];
+
+    if (this.mode === "pvp") {
+      players.push(this.player2.sprite);
+    }
+
     // runs every second
     this.time.addEvent({
       delay: 1_000,
       loop: true,
       callback: this.timerHandler,
-      args: [this, textTimer, this.enemies, this.player.sprite]
+      args: [this, textTimer, this.enemies, players]
     });
 
     textTimer.setOrigin(.5);
@@ -176,7 +206,8 @@ export default class GameScene extends Phaser.Scene {
     btnPause.on("pointerdown", () => {
       this.scene.pause();
       this.scene.launch(KEYS.SCENE.PAUSE, {
-        time: this.data.get("time")
+        time: this.data.get("time"),
+        howlerDeaths: this.data.get("howlerDeaths")
       });
     });
 
@@ -184,7 +215,7 @@ export default class GameScene extends Phaser.Scene {
     btnPause.on("pointerout", () => btnPause.setScale(1));
   }
 
-  timerHandler(scene, textTimer, enemies, player) {
+  timerHandler(scene, textTimer, enemies, players) {
     const currentTime = scene.data.get("time");
     const newTime = currentTime + 1;
 
@@ -209,7 +240,8 @@ export default class GameScene extends Phaser.Scene {
       }
 
       for (let x = 0; x < quantity; x++) {
-        Howler.spawn(scene, enemies, player);
+        const targetPlayer = players[Phaser.Math.Between(0, players.length - 1)];
+        Howler.spawn(scene, enemies, targetPlayer);
       }
     }
 
@@ -221,10 +253,12 @@ export default class GameScene extends Phaser.Scene {
   update() {
     this.player.update();
 
-    const closestEnemyToPlayer = this.physics.closest(this.player.sprite, this.enemies.getMatching("dead", false));
-    const furthestEnemyToPlayer = this.physics.furthest(this.player.sprite, this.enemies.getMatching("dead", false));
-    this.player.updateCurrentTarget(closestEnemyToPlayer);
+    if (this.mode === "pvp") {
+      this.player2.update();
+    }
 
+    const closestEnemyToPlayer = this.physics.closest(this.player.sprite, this.enemies.getMatching("dead", false));
+    this.player.updateCurrentTarget(closestEnemyToPlayer);
     this.player.updateTargets(this.enemies.getMatching("dead", false));
   }
 }

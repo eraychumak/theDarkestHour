@@ -6,6 +6,8 @@ import PauseScene from "./Scenes/Pause.js";
 import GameOverScene from "./Scenes/GameOver.js";
 import AchievementsScene from "./Scenes/Achievements.js";
 import LevelUpScene from "./Scenes/LevelUp.js";
+import HowToPlayScene from "./Scenes/HowToPlay.js";
+import ModeSelector from "./Scenes/ModeSelector.js";
 
 const config = {
   type: Phaser.AUTO,
@@ -13,7 +15,7 @@ const config = {
   dom: {
     createContainer: true
   },
-  scene: [PreloadScene, MenuScene, DifficultySelectorScene, GameScene, PauseScene, GameOverScene, AchievementsScene, LevelUpScene],
+  scene: [PreloadScene, MenuScene, DifficultySelectorScene, GameScene, PauseScene, GameOverScene, AchievementsScene, HowToPlayScene, LevelUpScene, ModeSelector],
   backgroundColor: "#1F0E1C",
   scale: {
     width: 1920,
