@@ -24,6 +24,7 @@ export default class PauseScene extends Phaser.Scene {
     const seconds = ("0" + currentTime % 60).slice(-2);
 
     this.time = `${minutes}:${seconds}`;
+    this.howlerDeaths = parseInt(data.howlerDeaths || 0);
   }
 
   create() {
@@ -95,11 +96,10 @@ export default class PauseScene extends Phaser.Scene {
 
     shield.postFX.addShine(.5, .5, 5);
 
-    new Player(
-      this,
-      192 + (sideBanner.width / 4),
-      this.game.config.height
-    );
+    const player = this.add.sprite(192 + (sideBanner.width / 4), this.game.config.height, KEYS.CHARACTERS.OLD_MAN);
+    player.setOrigin(1);
+    player.setScale(4);
+    player.play(KEYS.ANIMATION.OLD_MAN.IDLE);
   }
 
   #text() {
@@ -118,7 +118,13 @@ export default class PauseScene extends Phaser.Scene {
       {...STYLES.TEXT.SMALL, wordWrap: { width: 340 }, lineSpacing: 18}
     );
 
-    const btnResume = new TextButton(this, timeElapsed.x, timeElapsed.y * 1.2, "Resume", () => {
+    const howlerDeaths = this.add.text(
+      timeElapsed.x, (timeElapsed.y + timeElapsed.height) + 20,
+      `Howlers Defeated: ${this.howlerDeaths}`,
+      {...STYLES.TEXT.SMALL, wordWrap: { width: 340 }, lineSpacing: 18}
+    );
+
+    const btnResume = new TextButton(this, howlerDeaths.x, howlerDeaths.y * 1.2, "Resume", () => {
       this.scene.resume(KEYS.SCENE.GAME);
       this.scene.stop();
     });

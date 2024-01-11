@@ -1,6 +1,5 @@
 import { ACHIEVEMENTS, KEYS, STYLES } from "../config.js";
 import Achievement from "../Sprites/Achievement.js";
-import Player from "../Sprites/Player.js";
 import TextButton from "../Sprites/TextButton.js";
 
 export default class AchievementsScene extends Phaser.Scene {
@@ -96,11 +95,10 @@ export default class AchievementsScene extends Phaser.Scene {
 
     shield.postFX.addShine(.5, .5, 5);
 
-    new Player(
-      this,
-      192 + (sideBanner.width / 4),
-      this.game.config.height
-    );
+    const player = this.add.sprite(192 + (sideBanner.width / 4), this.game.config.height, KEYS.CHARACTERS.OLD_MAN);
+    player.setOrigin(1);
+    player.setScale(4);
+    player.play(KEYS.ANIMATION.OLD_MAN.IDLE);
   }
 
   #text() {

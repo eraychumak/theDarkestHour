@@ -28,6 +28,10 @@ export default class MenuScene extends Phaser.Scene {
       volume: 0,
       duration: 3_000
     });
+
+    sessionStorage.removeItem("gameDifficulty");
+    sessionStorage.removeItem("mode");
+    sessionStorage.removeItem("gameLevel");
   }
 
   create() {
@@ -130,11 +134,10 @@ export default class MenuScene extends Phaser.Scene {
 
     shield.postFX.addShine(.5, .5, 5);
 
-    new Player(
-      this,
-      192 + (sideBanner.width / 4),
-      this.game.config.height
-    );
+    const player = this.add.sprite(192 + (sideBanner.width / 4), this.game.config.height, KEYS.CHARACTERS.OLD_MAN);
+    player.setOrigin(1);
+    player.setScale(4);
+    player.play(KEYS.ANIMATION.OLD_MAN.IDLE);
   }
 
   #text() {
@@ -195,6 +198,11 @@ export default class MenuScene extends Phaser.Scene {
       this.scene.start(KEYS.SCENE.ACHIEVEMENTS);
 
     }, { width: 350});
+
+    const howToPlayBtn = new TextButton(this, playBtn.x, playBtn.y + playBtn.height + 20, "How To Play", () => {
+      this.scene.start(KEYS.SCENE.HOW_TO_PLAY);
+
+    }, { width: 620});
 
     playBtn.enableGlow();
   }

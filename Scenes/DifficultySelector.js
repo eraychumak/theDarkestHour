@@ -1,5 +1,4 @@
 import { KEYS, STYLES } from "../config.js";
-import Player from "../Sprites/Player.js";
 import TextButton from "../Sprites/TextButton.js";
 
 export default class DifficultySelectorScene extends Phaser.Scene {
@@ -86,24 +85,14 @@ export default class DifficultySelectorScene extends Phaser.Scene {
 
     shield.postFX.addShine(.5, .5, 5);
 
-    new Player(
-      this,
-      192 + (sideBanner.width / 4),
-      this.game.config.height
-    );
+    const player = this.add.sprite(192 + (sideBanner.width / 4), this.game.config.height, KEYS.CHARACTERS.OLD_MAN);
+    player.setOrigin(1);
+    player.setScale(4);
+    player.play(KEYS.ANIMATION.OLD_MAN.IDLE);
   }
 
-  #startGame() {
-    const fx = this.cameras.main.postFX.addWipe(0.1, 0, 0);
-
-    this.scene.transition({
-      target: KEYS.SCENE.GAME,
-      duration: 2000,
-      moveBelow: true,
-      onUpdate: (progress) => {
-        fx.progress = progress;
-      }
-    });
+  #continueSelectMode() {
+    this.scene.start(KEYS.SCENE.MODE_SELECTOR)
   }
 
   #text() {
@@ -118,7 +107,7 @@ export default class DifficultySelectorScene extends Phaser.Scene {
 
     const btnEasy = new TextButton(this, title.x, title.y * 1.5, "Easy", () => {
       sessionStorage.setItem("gameDifficulty", "easy");
-      this.#startGame();
+      this.#continueSelectMode();
     });
 
     // ? Description - Difficulty Mode - Easy
@@ -130,7 +119,7 @@ export default class DifficultySelectorScene extends Phaser.Scene {
 
     const btnNormal = new TextButton(this, (btnEasy.x + btnEasy.width) + 150, btnEasy.y, "Normal", () => {
       sessionStorage.setItem("gameDifficulty", "normal");
-      this.#startGame();
+      this.#continueSelectMode();
     });
 
     // ? Description - Difficulty Mode - Normal
@@ -142,7 +131,7 @@ export default class DifficultySelectorScene extends Phaser.Scene {
 
     const btnHard = new TextButton(this, (btnNormal.x + btnNormal.width) + 150, btnNormal.y, "Hard", () => {
       sessionStorage.setItem("gameDifficulty", "hard");
-      this.#startGame();
+      this.#continueSelectMode();
     });
 
     // ? Description - Difficulty Mode - Hard
