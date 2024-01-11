@@ -1,4 +1,4 @@
-import { ACHIEVEMENTS, IMAGES, KEYS } from "../config.js";
+import { ACHIEVEMENTS, KEYS, STYLES } from "../config.js";
 import Magic from "./Magic.js";
 
 export default class Player {
@@ -17,6 +17,11 @@ export default class Player {
     this.damage = 10;
     this.hp = 3;
     this.dead = false;
+    this.exp = 0;
+    this.playerLevel = 0;
+    this.playerLevelExpMax = 200;
+    this.projectiles = 1;
+    this.cooldown = 5_000;
 
     this.difficulty = sessionStorage.getItem("difficulty");
 
@@ -169,33 +174,47 @@ export default class Player {
     this.firstName.setOrigin(.5);
   }
 
+  getRandomEnemy() {
+    const randomNum = Phaser.Math.Between(0, this.enemies.length);
+    const randomEnemy = this.enemies[randomNum];
+
+    if (!randomEnemy || randomEnemy === this.target) {
+      return this.getRandomEnemy();
+    }
+
+    return randomEnemy;
+  }
+
   shoot() {
     if (this.dead) return;
 
     const bullet = this.bullets.get(this.player.x, this.player.y);
     this.#soundShoot.play();
 
-    this.#scene.physics.add.collider(
-      bullet,
-      this.enemyTarget,
-      (magic, target) => {
-        magic.destroy();
-        target.hurt(this.damage);
-
-        const defeatedHowlers = localStorage.getItem("defeatedHowlers") || 0;
-        localStorage.setItem("defeatedHowlers", defeatedHowlers + 1);
-
-        if (defeatedHowlers + 1 >= 200) {
-          localStorage.setItem(ACHIEVEMENTS.HOWLER_HUNTER, true);
-
-        }
-      }
-    );
-
+    // specifically nearest enemy
     this.#scene.physics.moveToObject(bullet, {
       x: this.enemyTarget.x + this.enemyTarget.width / 2,
       y: this.enemyTarget.y + this.enemyTarget.height / 2
     }, 200);
+
+    // any additional projectiles can go on different enemies or sometimes the same one
+    if (this.projectiles > 1) {
+      for (let x = 1; x < this.projectiles; x++) {
+        const extraBullet = this.bullets.get(this.player.x, this.player.y);
+        this.#soundShoot.play();
+
+        const randomEnemy = this.getRandomEnemy();
+
+        this.#scene.physics.moveToObject(extraBullet, {
+          x: randomEnemy.x + randomEnemy.width / 2,
+          y: randomEnemy.y + randomEnemy.height / 2
+        }, 200);
+      }
+    }
+  }
+
+  updateTargets(enemies) {
+    this.enemies = enemies;
   }
 
   hurt() {
@@ -276,6 +295,78 @@ export default class Player {
     });
   }
 
+  incProjectiles() {
+    this.projectiles += 1;
+  }
+
+  reduceCooldown() {
+    this.cooldown -= 1_000;
+    this.cooldownTimer.delay = this.cooldown;
+  }
+
+  levelUp() {
+    this.#scene.scene.pause();
+
+    this.#scene.scene.launch(KEYS.SCENE.LEVEL_UP, {
+      player: this
+    });
+  }
+
+  updateEXP() {
+    const maxWidth = this.#scene.game.config.width / 2;
+    let currentWidth = maxWidth * (this.exp / this.playerLevelExpMax);
+
+    if (currentWidth > maxWidth) {
+      this.playerLevel += 1;
+      this.exp -= this.playerLevelExpMax;
+      this.playerLevelExpMax += 200;
+
+      currentWidth = maxWidth * (this.exp / this.playerLevelExpMax);
+      this.expBarMax.setText(this.playerLevelExpMax.toLocaleString());
+      this.levelUp();
+    }
+
+    this.innerEXPBar.width = currentWidth;
+    this.playerLevelText.setText(`Level: ${this.playerLevel}`);
+    this.expBarCurrent.setText(`${this.exp}`);
+  }
+
+  showEXP() {
+    const maxWidth = this.#scene.game.config.width / 2;
+    let currentWidth = 0;
+
+    if (this.playerLevel === 0) {
+      currentWidth = maxWidth * (this.exp / 200);
+    }
+
+    this.innerEXPBar = this.#scene.add.rectangle(
+      this.#scene.game.config.width / 4, (this.#scene.game.config.height * .95) - 40,
+      currentWidth, 80,
+      0x00ff00
+    );
+
+    this.innerEXPBar.setAlpha(.3);
+    this.innerEXPBar.setOrigin(0);
+
+    const expBar = this.#scene.add.nineslice(
+      this.#scene.game.config.width / 2, this.#scene.game.config.height * .95,
+      KEYS.GAME.UI.EXP_BORDER, 0, this.#scene.game.config.width / 2,
+      80, 8, 8, 8, 8
+    );
+
+    expBar.setOrigin(.5);
+    expBar.setTint(0x00ff00);
+
+    this.playerLevelText = this.#scene.add.text(expBar.x, expBar.y, `Level: ${this.playerLevel}`, STYLES.TEXT.GAME);
+    this.playerLevelText.setOrigin(.5);
+
+    this.expBarCurrent = this.#scene.add.text(expBar.x - (expBar.width / 2) - 10, expBar.y - (expBar.height / 2) + 10, this.exp, STYLES.TEXT.GAME);
+    this.expBarCurrent.setOrigin(1, 0);
+
+    this.expBarMax = this.#scene.add.text(expBar.x + (expBar.width / 2) + 10, expBar.y - (expBar.height / 2) + 10, "200", STYLES.TEXT.GAME);
+    this.expBarMax.setOrigin(0);
+  }
+
   updateCurrentTarget(target) {
     this.enemyTarget = target;
   }
@@ -283,10 +374,41 @@ export default class Player {
   enableShooting() {
     if (this.dead) return;
 
-    setInterval(() => {
-      if (!this.enemyTarget) return;
-      this.shoot();
-    }, 5_000);
+    // runs every 5 seconds
+    this.cooldownTimer = this.#scene.time.addEvent({
+      delay: this.cooldown,
+      loop: true,
+      callback: () => {
+        if (!this.enemyTarget) return;
+        this.shoot();
+      }
+    });
+  }
+
+  checkBulletCollision() {
+    this.#scene.physics.collide(this.bullets, this.enemies, (target, magic) => {
+      magic.destroy();
+      target.hurt(this.damage);
+
+      // estimate of when particles arrive at EXP bar ~ 3s.
+      this.#scene.time.addEvent({
+        delay: 3_000,
+        callback: () => {
+          // player gains +5 exp extra with level up. Minimum 30.
+          this.exp += (30 + (this.playerLevel * 5));
+          this.updateEXP();
+        }
+      });
+
+      const defeatedHowlers = localStorage.getItem("defeatedHowlers") || 0;
+      const newTotal = parseInt(defeatedHowlers) + 1;
+
+      localStorage.setItem("defeatedHowlers", newTotal);
+
+      if (newTotal>= 200) {
+        localStorage.setItem(ACHIEVEMENTS.HOWLER_HUNTER, true);
+      }
+    });
   }
 
   update() {
@@ -296,6 +418,8 @@ export default class Player {
       this.player.x - (this.player.width * 1.5),
       this.player.y - (this.player.height * 1.8)
     );
+
+    this.checkBulletCollision();
   }
 
   static loadAnimations(scene) {
