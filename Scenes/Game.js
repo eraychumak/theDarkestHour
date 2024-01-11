@@ -200,7 +200,7 @@ export default class GameScene extends Phaser.Scene {
       sessionStorage.setItem("gameLevel", currentLevel + 1);
     }
 
-    if (newTime % 1 === 0) {
+    if (newTime % 5 === 0) {
       let quantity = 1;
 
       if (newTime % 30 === 0) {
