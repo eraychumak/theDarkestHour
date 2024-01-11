@@ -92,6 +92,9 @@ export default class Howler extends Phaser.Physics.Arcade.Sprite {
       this.anims.play(KEYS.ANIMATION.HOWLER.DEATH);
       this.removeHPBar();
 
+      const howlerDeaths = parseInt(this.scene.data.getItem("howlerDeaths") || 0);
+      this.scene.data.setItem("howlerDeaths", howlerDeaths + 1);
+
       const expParticles = this.scene.add.particles(0, 0, KEYS.GAME.EXP, {
         scale: .5,
         lifespan: 3_000,
