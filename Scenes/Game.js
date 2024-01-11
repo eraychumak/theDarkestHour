@@ -27,6 +27,8 @@ export default class GameScene extends Phaser.Scene {
       volume: 0,
       duration: 3_000
     });
+
+    sessionStorage.setItem("gameLevel", 0);
   }
 
   create() {
@@ -117,6 +119,7 @@ export default class GameScene extends Phaser.Scene {
     this.player.enableShooting();
     this.player.showHearts();
     this.player.updateHearts();
+    this.player.showEXP();
 
     this.enemies = this.physics.add.group({
       classType: Howler,
@@ -191,30 +194,18 @@ export default class GameScene extends Phaser.Scene {
     scene.data.set("time", newTime);
     textTimer.setText(`${minutes}:${seconds}`);
 
-    if (newTime <= 120) { sessionStorage.setItem("level", 1); }
-    if (newTime > 120 && newTime <= 240) { sessionStorage.setItem("level", 2); }
-    if (newTime > 240 && newTime <= 360) { sessionStorage.setItem("level", 3); }
-    if (newTime > 360 && newTime <= 480) { sessionStorage.setItem("level", 5); }
+    // increase game level every minute
+    if (newTime % 60 === 0) {
+      const currentLevel = parseInt(sessionStorage.getItem("gameLevel") || 0);
+      sessionStorage.setItem("gameLevel", currentLevel + 1);
+    }
 
-    const enemyCount = enemies.getLength();
-
-    if (newTime % 5 === 0) {
+    if (newTime % 1 === 0) {
       let quantity = 1;
 
-      if (newTime <= 120 && enemyCount < 10) {
-        quantity = Phaser.Math.Between(1, 5);
-      }
-
-      if ((newTime > 120 && newTime <= 240) && enemyCount < 15) {
-        quantity = Phaser.Math.Between(1, 4);
-      }
-
-      if ((newTime > 240 && newTime <= 360) && enemyCount < 20) {
-        quantity = Phaser.Math.Between(1, 3);
-      }
-
-      if ((newTime > 360 && newTime <= 480) && enemyCount < 25) {
-        quantity = Phaser.Math.Between(1, 2);
+      if (newTime % 30 === 0) {
+        const max = Phaser.Math.Between(2, 5);
+        quantity = Phaser.Math.Between(1, max);
       }
 
       for (let x = 0; x < quantity; x++) {
@@ -231,6 +222,9 @@ export default class GameScene extends Phaser.Scene {
     this.player.update();
 
     const closestEnemyToPlayer = this.physics.closest(this.player.sprite, this.enemies.getMatching("dead", false));
+    const furthestEnemyToPlayer = this.physics.furthest(this.player.sprite, this.enemies.getMatching("dead", false));
     this.player.updateCurrentTarget(closestEnemyToPlayer);
+
+    this.player.updateTargets(this.enemies.getMatching("dead", false));
   }
 }
