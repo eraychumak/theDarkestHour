@@ -135,6 +135,8 @@ export default class GameScene extends Phaser.Scene {
       this.player2.showName();
       this.player2.showHearts();
       this.player2.updateHearts();
+
+      this.input.addPointer(1);
     }
 
     this.enemies = this.physics.add.group({
