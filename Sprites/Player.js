@@ -23,7 +23,7 @@ export default class Player {
     this.projectiles = 1;
     this.cooldown = 5_000;
 
-    this.difficulty = sessionStorage.getItem("difficulty");
+    this.difficulty = sessionStorage.getItem("gameDifficulty");
 
     if (this.difficulty === "hard") {
       this.hp = 1;
@@ -255,31 +255,14 @@ export default class Player {
   updateHearts() {
     const hearts = this.hearts.getChildren();
 
-    if (this.hp === 2) {
-      hearts[2].setAlpha(.1);
-    }
+    // handles hearts and half hearts
+    for (let x = 0; x < hearts.length; x++) {
+      const currentHeart = hearts[x];
+      const heartNum = x + 1;
 
-    if (this.hp === 1) {
-      hearts[1].setAlpha(.1);
-      hearts[2].setAlpha(.1);
-    }
-
-    if (this.hp === 0) {
-      hearts[0].setAlpha(.1);
-      hearts[1].setAlpha(.1);
-      hearts[2].setAlpha(.1);
-    }
-
-    if (this.hp === 2.5) {
-      hearts[2].setAlpha(.5);
-    }
-
-    if (this.hp === 1.5) {
-      hearts[1].setAlpha(.5);
-    }
-
-    if (this.hp === .5) {
-      hearts[0].setAlpha(.5);
+      if (this.hp < heartNum) {
+        currentHeart.setAlpha(this.hp % 1 === 0 ? 0.1 : 0.5);
+      }
     }
   }
 
