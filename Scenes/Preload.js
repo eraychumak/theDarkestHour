@@ -69,6 +69,6 @@ export default class PreloadScene extends Phaser.Scene {
     Player.loadAnimations(this);
     Howler.loadAnimations(this);
 
-    this.scene.start(KEYS.SCENE.GAME);
+    this.scene.start(KEYS.SCENE.MENU);
   }
 }
