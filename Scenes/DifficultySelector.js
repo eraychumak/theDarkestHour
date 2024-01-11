@@ -117,7 +117,7 @@ export default class DifficultySelectorScene extends Phaser.Scene {
     title.setOrigin(0);
 
     const btnEasy = new TextButton(this, title.x, title.y * 1.5, "Easy", () => {
-      sessionStorage.setItem("difficulty", "easy");
+      sessionStorage.setItem("gameDifficulty", "easy");
       this.#startGame();
     });
 
@@ -129,7 +129,7 @@ export default class DifficultySelectorScene extends Phaser.Scene {
     );
 
     const btnNormal = new TextButton(this, (btnEasy.x + btnEasy.width) + 150, btnEasy.y, "Normal", () => {
-      sessionStorage.setItem("difficulty", "normal");
+      sessionStorage.setItem("gameDifficulty", "normal");
       this.#startGame();
     });
 
@@ -141,7 +141,7 @@ export default class DifficultySelectorScene extends Phaser.Scene {
     );
 
     const btnHard = new TextButton(this, (btnNormal.x + btnNormal.width) + 150, btnNormal.y, "Hard", () => {
-      sessionStorage.setItem("difficulty", "hard");
+      sessionStorage.setItem("gameDifficulty", "hard");
       this.#startGame();
     });
 
