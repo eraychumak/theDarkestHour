@@ -18,16 +18,16 @@ export default class PreloadScene extends Phaser.Scene {
 
     this.load.html(KEYS.MENU.INPUT, HTML.MENU.INPUT);
 
-    this.load.audio(KEYS.SOUND.BATTLE, [SOUND.BATTLE]);
-    this.load.audio(KEYS.SOUND.NOMOREMAGIC, [SOUND.NOMOREMAGIC]);
-    this.load.audio(KEYS.SOUND.RISING, [SOUND.RISING]);
-    this.load.audio(KEYS.SOUND.FOOTSTEP, [SOUND.FOOTSTEP]);
-    this.load.audio(KEYS.SOUND.MAGIC_SPARKLE, [SOUND.MAGIC_SPARKLE]);
-    this.load.audio(KEYS.SOUND.BTN.SELECT, [SOUND.BTN.SELECT]);
-    this.load.audio(KEYS.SOUND.BTN.CLICK, [SOUND.BTN.CLICK]);
-    this.load.audio(KEYS.SOUND.ERR, [SOUND.ERR]);
-    this.load.audio(KEYS.SOUND.HOWLER.ATTACK, [SOUND.HOWLER.ATTACK]);
-    this.load.audio(KEYS.SOUND.HOWLER.HURT, [SOUND.HOWLER.HURT]);
+    this.load.audio(KEYS.SOUND.BATTLE, SOUND.BATTLE);
+    this.load.audio(KEYS.SOUND.NOMOREMAGIC, SOUND.NOMOREMAGIC);
+    this.load.audio(KEYS.SOUND.RISING, SOUND.RISING);
+    this.load.audio(KEYS.SOUND.FOOTSTEP, SOUND.FOOTSTEP);
+    this.load.audio(KEYS.SOUND.MAGIC_SPARKLE, SOUND.MAGIC_SPARKLE);
+    this.load.audio(KEYS.SOUND.BTN.SELECT, SOUND.BTN.SELECT);
+    this.load.audio(KEYS.SOUND.BTN.CLICK, SOUND.BTN.CLICK);
+    this.load.audio(KEYS.SOUND.ERR, SOUND.ERR);
+    this.load.audio(KEYS.SOUND.HOWLER.ATTACK, SOUND.HOWLER.ATTACK);
+    this.load.audio(KEYS.SOUND.HOWLER.HURT, SOUND.HOWLER.HURT);
 
     this.load.image(KEYS.MENU.BG, IMAGES.MENU.BG);
     this.load.image(KEYS.MENU.ART, IMAGES.MENU.ART);

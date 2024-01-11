@@ -123,10 +123,10 @@ const SOUND = Object.freeze({
     ATTACK: "./assets/sound/howler_attack.mp3"
   }),
   BTN: Object.freeze({
-    SELECT: "./assets/sound/select_001.ogg",
-    CLICK: "./assets/sound/click_002.ogg"
+    SELECT: "./assets/sound/select_001.mp3",
+    CLICK: "./assets/sound/click_002.mp3"
   }),
-  ERR: "./assets/sound/error_007.ogg"
+  ERR: "./assets/sound/error_007.mp3"
 });
 
 const SPRITE_SHEETS = Object.freeze({
