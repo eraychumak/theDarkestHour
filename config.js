@@ -84,8 +84,8 @@ const KEYS = Object.freeze({
 
 const IMAGES = Object.freeze({
   MENU: Object.freeze({
-    BG: "./assets/menu/bg.jpg",
-    ART: "./assets/menu/art.png",
+    BG: "./assets/menu/bg.avif",
+    ART: "./assets/menu/art.avif",
     SHIELD: "./assets/menu/shield.png",
     BTN: Object.freeze({
       FULLSCREEN: "./assets/menu/fullscreen.png",
@@ -116,17 +116,17 @@ const SOUND = Object.freeze({
   BATTLE: "./assets/sound/battleTheme.mp3",
   NOMOREMAGIC: "./assets/sound/noMoreMagic.mp3",
   RISING: "./assets/sound/rising.mp3",
-  FOOTSTEP: "./assets/sound/footstep_grass.wav",
-  MAGIC_SPARKLE: "./assets/sound/magic_sparkle.wav",
+  FOOTSTEP: "./assets/sound/footstepGrass.mp3",
+  MAGIC_SPARKLE: "./assets/sound/magicSparkle.mp3",
   HOWLER: Object.freeze({
-    HURT: "./assets/sound/howler_hurt.mp3",
-    ATTACK: "./assets/sound/howler_attack.mp3"
+    HURT: "./assets/sound/howlerHurt.mp3",
+    ATTACK: "./assets/sound/howlerAttack.mp3"
   }),
   BTN: Object.freeze({
-    SELECT: "./assets/sound/select_001.mp3",
-    CLICK: "./assets/sound/click_002.mp3"
+    SELECT: "./assets/sound/btnSelect.mp3",
+    CLICK: "./assets/sound/btnClick.mp3"
   }),
-  ERR: "./assets/sound/error_007.mp3"
+  ERR: "./assets/sound/error.mp3"
 });
 
 const SPRITE_SHEETS = Object.freeze({
