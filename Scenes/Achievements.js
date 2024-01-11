@@ -144,7 +144,7 @@ export default class AchievementsScene extends Phaser.Scene {
       {
         x: newAdventurer.x,
         y: newAdventurer.y + newAdventurer.height + 50,
-        key: ACHIEVEMENTS.BLINK_OF_AN_EYE,
+        key: ACHIEVEMENTS.HOWLER_HUNTER,
         label: "Howler Hunter",
         desc: "All-time record in defeating 200 howlers."
       },
@@ -157,7 +157,7 @@ export default class AchievementsScene extends Phaser.Scene {
       {
         x: howlerHunter.x + howlerHunter.width + 50,
         y: howlerHunter.y,
-        key: ACHIEVEMENTS.BLINK_OF_AN_EYE,
+        key: ACHIEVEMENTS.FASHIONABLY_EARLY,
         label: "Fashionably Early",
         desc: "Rushed to afterlife, dead before 60 seconds. "
       },
