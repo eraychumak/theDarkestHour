@@ -9,17 +9,56 @@ export default class Howler extends Phaser.Physics.Arcade.Sprite {
 
     this.anims.play(KEYS.ANIMATION.HOWLER.IDLE);
 
-    this.hp = 10;
     this.dead = false;
-    this.currentLevel = sessionStorage.getItem("level");
-
-    if (this.currentLevel === 2) { this.hp = 15; }
-    if (this.currentLevel === 3) { this.hp = 20; }
-    if (this.currentLevel === 4) { this.hp = 25; }
-    if (this.currentLevel === 5) { this.hp = 30; }
+    this.currentLevel = parseInt(sessionStorage.getItem("gameLevel"));
+    // hp increases by 5 with each game level
+    this.maxHP = 10 + (this.currentLevel * 5);
+    this.hp = this.maxHP;
 
     this.#soundAttack = scene.sound.add(KEYS.SOUND.HOWLER.ATTACK);
     this.#soundHurt = scene.sound.add(KEYS.SOUND.HOWLER.HURT);
+
+    this.showHP();
+  }
+
+  preUpdate(time, delta) {
+    super.preUpdate(time, delta);
+
+    this.hpBar.x = this.x - (this.width / 4);
+    this.hpBar.y = this.y - (this.height / 4);
+    this.innerHPBar.x = this.x - (this.width / 4);
+    this.innerHPBar.y = this.y - (this.height / 4);
+  }
+
+  updateHPBar() {
+    const currentWidth = 50 * (this.hp / this.maxHP);
+    this.innerHPBar.width = currentWidth;
+  }
+
+  removeHPBar() {
+    this.innerHPBar.destroy();
+    this.hpBar.destroy();
+  }
+
+  showHP() {
+    const currentWidth = 50 * (this.maxHP / this.hp);
+
+    this.hpBar = this.scene.add.rectangle(
+      this.x - (this.width / 2), this.y,
+      50, 8,
+      0xff0000
+    );
+
+    this.hpBar.setOrigin(0);
+    this.hpBar.setAlpha(.3);
+
+    this.innerHPBar = this.scene.add.rectangle(
+      this.x - (this.width / 2), this.y,
+      currentWidth, 8,
+      0x00ff00
+    );
+
+    this.innerHPBar.setOrigin(0);
   }
 
   setTarget(target) {
@@ -45,11 +84,35 @@ export default class Howler extends Phaser.Physics.Arcade.Sprite {
   hurt(damage) {
     this.hp -= damage;
     this.setVelocity(0);
+    this.updateHPBar();
     this.#soundHurt.play();
 
     if (this.hp <= 0) {
       this.dead = true;
       this.anims.play(KEYS.ANIMATION.HOWLER.DEATH);
+      this.removeHPBar();
+
+      const expParticles = this.scene.add.particles(0, 0, KEYS.GAME.EXP, {
+        scale: .5,
+        lifespan: 3_000,
+        maxParticles: 10,
+        maxVelocityX: 500,
+        maxVelocityY: 500,
+      });
+
+      const emitterLocation = new Phaser.Geom.Rectangle(this.x, this.y + (this.height / 2), 10, 10);
+      expParticles.addEmitZone({
+        type: "random",
+        source: emitterLocation
+      });
+
+      expParticles.createGravityWell({
+        x: (this.scene.game.config.width / 4),
+        y: this.scene.game.config.height * .95,
+        power: 1,
+        epsilon: 80,
+        gravity: 10_00
+      });
 
       setTimeout(() => {
         this.destroy();
