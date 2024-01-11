@@ -6,7 +6,8 @@ const KEYS = Object.freeze({
     GAME: "SCENE_GAME",
     PAUSE: "SCENE_PAUSE",
     GAME_OVER: "SCENE_GAME_OVER",
-    ACHIEVEMENTS: "SCENE_ACHIEVEMENTS"
+    ACHIEVEMENTS: "SCENE_ACHIEVEMENTS",
+    LEVEL_UP: "SCENE_LEVEL_UP"
   }),
   MENU: Object.freeze({
     BG: "MENU_BG",
@@ -29,9 +30,11 @@ const KEYS = Object.freeze({
       PAUSE: "GAME_BTN_PAUSE"
     }),
     UI: Object.freeze({
-      HEART: "GAME_UI_HEART"
+      HEART: "GAME_UI_HEART",
+      EXP_BORDER: "GAME_UI_EXP_BORDER"
     }),
-    MAGIC: "GAME_MAGIC"
+    MAGIC: "GAME_MAGIC",
+    EXP: "GAME_EXP"
   }),
   CHARACTERS: Object.freeze({
     OLD_MAN: "OLD_MAN",
@@ -100,8 +103,10 @@ const IMAGES = Object.freeze({
       PAUSE: "./assets/game/pause.png"
     }),
     UI: Object.freeze({
-      HEART: "./assets/game/heart.png"
-    })
+      HEART: "./assets/game/heart.png",
+      EXP_BORDER: "./assets/game/EXP_Border.png"
+    }),
+    EXP: "./assets/game/EXP.png"
   })
 });
 

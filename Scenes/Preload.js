@@ -36,6 +36,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image(KEYS.MENU.BTN.EXIT_FULLSCREEN, IMAGES.MENU.BTN.EXIT_FULLSCREEN);
     this.load.image(KEYS.GAME.BTN.PAUSE, IMAGES.GAME.BTN.PAUSE);
     this.load.image(KEYS.GAME.UI.HEART, IMAGES.GAME.UI.HEART);
+    this.load.image(KEYS.GAME.EXP, IMAGES.GAME.EXP);
 
     // 48x48 frame, 21 frames
     this.load.spritesheet(KEYS.CHARACTERS.OLD_MAN, SPRITE_SHEETS.CHARACTERS.OLD_MAN.PNG, {
@@ -59,6 +60,7 @@ export default class PreloadScene extends Phaser.Scene {
 
     this.load.image(KEYS.MENU.BTN.BORDER, IMAGES.MENU.BTN.BORDER);
     this.load.image(KEYS.MENU.ACHIEVEMENT.BORDER, IMAGES.MENU.ACHIEVEMENT.BORDER);
+    this.load.image(KEYS.GAME.UI.EXP_BORDER, IMAGES.GAME.UI.EXP_BORDER);
   }
 
   create () {
@@ -67,6 +69,6 @@ export default class PreloadScene extends Phaser.Scene {
     Player.loadAnimations(this);
     Howler.loadAnimations(this);
 
-    this.scene.start(KEYS.SCENE.MENU);
+    this.scene.start(KEYS.SCENE.GAME);
   }
 }
